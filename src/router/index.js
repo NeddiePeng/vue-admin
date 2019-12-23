@@ -15,6 +15,11 @@ export default new Router({
           path: '/table',
           name: 'Table',
           component: () => import('@/components/table/Table')
+        },
+        {
+          path: '/im',
+          name: 'Im',
+          component: () => import('@/components/im/Im')
         }
       ]
     },

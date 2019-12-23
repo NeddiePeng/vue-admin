@@ -57,7 +57,7 @@
                         <i class="el-icon-menu"></i>
                         <span slot="title">介绍</span>
                     </el-menu-item>
-                    <el-menu-item index="/table">
+                    <el-menu-item index="/im">
                         <i class="el-icon-document"></i>
                         <span slot="title">安装</span>
                     </el-menu-item>
