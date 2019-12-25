@@ -7,7 +7,7 @@
             <el-container>
                 <el-aside class="im-staff">
                     <ul>
-                        <li class="staff-item">
+                        <li class="staff-item active-item">
                             <el-avatar size="medium" src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"></el-avatar>
                             <span class="staff-name">刘晓涛</span>
                             <el-badge class="mark" :value="12" />
@@ -34,10 +34,12 @@
                         <el-avatar size="medium" src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"></el-avatar>
                         <span class="staff-name">刘晓涛</span>
                     </el-header>
-                    <el-main>
+                    <el-main class="content">
 
                     </el-main>
-                    <el-footer>footer</el-footer>
+                    <el-footer class="send-content">
+
+                    </el-footer>
                 </el-container>
             </el-container>
         </el-col>
@@ -52,6 +54,20 @@
 </script>
 
 <style>
+    .content{
+        height: 372px;
+    }
+    .send-content{
+        padding: 0;
+        height: 158px!important;
+        border-top: 1px solid #F1F1F1;
+    }
+    .active-item{
+        background-color: white;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
     .im-header{
         width: 100%;
         height: 70px!important;
