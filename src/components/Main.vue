@@ -15,55 +15,72 @@
                     background-color="#1d1e23"
                     text-color="#f6ca9d"
                     active-text-color="#ffd04b">
-                <el-menu-item index="1">处理中心</el-menu-item>
-                <el-submenu index="2">
-                    <template slot="title">我的工作台</template>
-                    <el-menu-item index="2-1">选项1</el-menu-item>
-                    <el-menu-item index="2-2">选项2</el-menu-item>
-                    <el-menu-item index="2-3">选项3</el-menu-item>
-                    <el-submenu index="2-4">
-                        <template slot="title">选项4</template>
-                        <el-menu-item index="2-4-1">选项1</el-menu-item>
-                        <el-menu-item index="2-4-2">选项2</el-menu-item>
-                        <el-menu-item index="2-4-3">选项3</el-menu-item>
-                    </el-submenu>
-                </el-submenu>
-                <el-menu-item index="3">消息中心</el-menu-item>
-                <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+                <el-menu-item index="1">
+                    博客管理
+                </el-menu-item>
+                <el-menu-item index="3">
+                    商店管理
+                </el-menu-item>
             </el-menu>
         </el-header>
         <el-container>
             <el-aside>
-                <el-menu class="el-menu-vertical-demo" :default-active="$route.path" router @open="handleOpen" @close="handleClose" :collapse="isCollapse"  background-color="#1d1e23" text-color="#fff"  active-text-color="#ffd04b">
-                    <el-submenu index="/">
+                <!-- /*:default-active="$route.path"*/-->
+                <el-menu class="el-menu-vertical-demo"  router @open="handleOpen" @close="handleClose" :collapse="isCollapse"  background-color="#1d1e23" text-color="#fff"  active-text-color="#ffd04b">
+                    <el-menu-item index="/">
+                        <i class="el-icon-menu"></i>
+                        <span slot="title">控制台</span>
+                    </el-menu-item>
+                    <el-submenu index="/activity">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span slot="title">首页</span>
+                            <i class="el-icon-s-ticket"></i>
+                            <span slot="title">活动管理</span>
                         </template>
-                        <el-menu-item-group>
-                            <span slot="title">分组一</span>
-                            <el-menu-item index="1-1">选项1</el-menu-item>
-                            <el-menu-item index="1-2">选项2</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group title="分组2">
-                            <el-menu-item index="1-3">选项3</el-menu-item>
-                        </el-menu-item-group>
-                        <el-submenu index="1-4">
-                            <span slot="title">选项4</span>
-                            <el-menu-item index="1-4-1">选项1</el-menu-item>
-                        </el-submenu>
+                        <el-menu-item index="1-1">活动列表</el-menu-item>
+                    </el-submenu>
+                    <el-menu-item index="/table1">
+                        <i class="el-icon-tableware"></i>
+                        <span slot="title">鸡汤管理</span>
+                    </el-menu-item>
+                    <el-submenu index="/1">
+                        <template slot="title">
+                            <i class="el-icon-s-order"></i>
+                            <span slot="title">帖子管理</span>
+                        </template>
+                        <el-menu-item index="1-1">帖子列表</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="/commit">
+                        <template slot="title">
+                            <i class="el-icon-s-comment"></i>
+                            <span slot="title">评论管理</span>
+                        </template>
+                        <el-menu-item index="1-1">帖子评论</el-menu-item>
+                        <el-menu-item index="1-1">鸡汤评论</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="/2">
+                        <template slot="title">
+                            <i class="el-icon-video-camera-solid"></i>
+                            <span slot="title">媒体管理</span>
+                        </template>
+                        <el-menu-item index="1-1">图片列表</el-menu-item>
+                        <el-menu-item index="1-1">视频列表</el-menu-item>
+                        <el-menu-item index="1-1">音频列表</el-menu-item>
+                    </el-submenu>
+                    <el-submenu index="/user">
+                        <template slot="title">
+                            <i class="el-icon-s-custom"></i>
+                            <span slot="title">用户管理</span>
+                        </template>
+                        <el-menu-item index="1-1">用户列表</el-menu-item>
+                        <el-menu-item index="1-1">达人列表</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="/table">
-                        <i class="el-icon-menu"></i>
-                        <span slot="title">介绍</span>
-                    </el-menu-item>
-                    <el-menu-item index="/im">
-                        <i class="el-icon-document"></i>
-                        <span slot="title">安装</span>
+                        <i class="el-icon-warning"></i>
+                        <span slot="title">举报管理</span>
                     </el-menu-item>
                     <el-menu-item index="/table">
-                        <i class="el-icon-setting"></i>
-                        <span slot="title">跟新日志</span>
+                        <i class="el-icon-s-help"></i>
+                        <span slot="title">反馈管理</span>
                     </el-menu-item>
                 </el-menu>
             </el-aside>
