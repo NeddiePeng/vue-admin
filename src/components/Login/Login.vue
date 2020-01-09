@@ -1,11 +1,11 @@
 <template>
-    <div id="login">
-        <transition-group name="flip-list" tag="ul">
+    <div id="login" class="winter">
+        <!--<transition-group name="flip-list" tag="ul">
             <li v-for="curImg in currImgs" v-bind:key="curImg" class="list-item">
                 <img :src="curImg">
             </li>
-        </transition-group>
-        <div class="login-parent">
+        </transition-group>-->
+        <!--<div class="login-parent">
             <div class="item">
                 <h2>layuiAdmin</h2>
                 <p>layui 官方出品的单页面后台管理模板系统</p>
@@ -22,10 +22,12 @@
             <div class="item">
                 <el-button type="success" class="submit">成功按钮</el-button>
             </div>
-        </div>
+        </div>-->
+        <canvas id="canvas" width="1912" height="920"></canvas>
     </div>
 </template>
 <script>
+    import {init} from './canvas'
     export default {
         name: "Login",
         data() {
@@ -46,6 +48,8 @@
         mounted: function () {
             this.currImgs = [this.imgs[0]];
             this.startChange();
+            var canvas = document.getElementById('canvas');
+            init(canvas);
         },
         methods: {
             startChange: function () {
@@ -64,6 +68,20 @@
 </script>
 
 <style type="text/css">
+    .winter{
+        background-repeat: repeat-x;
+        background-position: bottom center;
+        background-image: url(../../assets/images/winterForest.png)!important;
+        background-color: #133D7C;
+    }
+    #canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
     #login,#login li,#login li img {
         width: 100%;
         height: 100%;
