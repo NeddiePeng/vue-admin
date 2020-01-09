@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Main from '@/components/Main'
 import Login from '@/components/Login/Login'
 import Activity from '@/components/activity/Blog'
+import Order from '@/components/mall/order/Order'
 
 Vue.use(Router);
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/activity',
       name: 'Activity',
       component: Activity
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      component: Order
     }
   ]
 })
