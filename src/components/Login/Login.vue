@@ -5,7 +5,7 @@
                 <img :src="curImg">
             </li>
         </transition-group>-->
-        <!--<div class="login-parent">
+        <div class="login-parent">
             <div class="item">
                 <h2>layuiAdmin</h2>
                 <p>layui 官方出品的单页面后台管理模板系统</p>
@@ -22,7 +22,7 @@
             <div class="item">
                 <el-button type="success" class="submit">成功按钮</el-button>
             </div>
-        </div>-->
+        </div>
         <video loop="loop" id="video" autoplay="autoplay">
             <source  src="./../../assets/media/spring.mp4" type="video/mp4">
         </video>
@@ -96,9 +96,9 @@
         position: relative;
     }
     .login-parent{
-        width: 375px;
-        height: 480px;
-        background-color: rgba(255, 255, 255, .5);
+        width: 350px;
+        height: 300px;
+        background-color: rgba(255, 255, 255, .8);
         position: absolute;
         top:50%;
         left: 50%;
@@ -107,6 +107,11 @@
         -ms-transform: translate(-50%, -50%);
         -o-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
+        z-index: 999;
+        padding: 10px 20px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
     }
     .item{
         margin-bottom: 15px;
