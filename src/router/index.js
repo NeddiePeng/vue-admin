@@ -6,6 +6,8 @@ import Activity from '@/components/activity/Blog'
 import Order from '@/components/mall/order/Order'
 import Basic from '@/components/mall/goods/Basic'
 import Price from '@/components/mall/goods/Price'
+import Attr from '@/components/mall/goods/Attr'
+import Combination from '@/components/mall/goods/Combination'
 
 Vue.use(Router);
 
@@ -52,6 +54,16 @@ export default new Router({
       path: '/price',
       name: 'Price',
       component: Price
+    },
+    {
+      path: '/attr',
+      name: 'Attr',
+      component: Attr
+    },
+    {
+      path: '/combination',
+      name: 'Combination',
+      component: Combination
     }
   ]
 })
