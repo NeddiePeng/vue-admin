@@ -4,6 +4,8 @@ import Main from '@/components/Main'
 import Login from '@/components/Login/Login'
 import Activity from '@/components/activity/Blog'
 import Order from '@/components/mall/order/Order'
+import Basic from '@/components/mall/goods/Basic'
+import Price from '@/components/mall/goods/Price'
 
 Vue.use(Router);
 
@@ -40,6 +42,16 @@ export default new Router({
       path: '/order',
       name: 'Order',
       component: Order
+    },
+    {
+      path: '/basic',
+      name: 'Basic',
+      component: Basic
+    },
+    {
+      path: '/price',
+      name: 'Price',
+      component: Price
     }
   ]
 })
