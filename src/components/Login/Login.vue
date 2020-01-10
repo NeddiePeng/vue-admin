@@ -1,5 +1,5 @@
 <template>
-    <div id="login" class="winter">
+    <div id="login">
         <!--<transition-group name="flip-list" tag="ul">
             <li v-for="curImg in currImgs" v-bind:key="curImg" class="list-item">
                 <img :src="curImg">
@@ -23,11 +23,12 @@
                 <el-button type="success" class="submit">成功按钮</el-button>
             </div>
         </div>-->
-        <canvas id="canvas" width="1912" height="920"></canvas>
+        <video loop="loop" id="video" autoplay="autoplay">
+            <source  src="./../../assets/media/spring.mp4" type="video/mp4">
+        </video>
     </div>
 </template>
 <script>
-    import {init} from './canvas'
     export default {
         name: "Login",
         data() {
@@ -48,8 +49,6 @@
         mounted: function () {
             this.currImgs = [this.imgs[0]];
             this.startChange();
-            var canvas = document.getElementById('canvas');
-            init(canvas);
         },
         methods: {
             startChange: function () {
@@ -68,19 +67,20 @@
 </script>
 
 <style type="text/css">
-    .winter{
-        background-repeat: repeat-x;
-        background-position: bottom center;
-        background-image: url(../../assets/images/winterForest.png)!important;
-        background-color: #133D7C;
+    #video{
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
     }
-    #canvas {
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
+    source{
+        min-width: 100%;
+        min-height: 100%;
+        height: auto;
+        width: auto;
     }
     #login,#login li,#login li img {
         width: 100%;
