@@ -9,6 +9,7 @@ import Price from '@/components/mall/goods/Price'
 import Attr from '@/components/mall/goods/Attr'
 import Combination from '@/components/mall/goods/Combination'
 import Detail from '@/components/mall/goods/Detail'
+import ActivityGoods from '@/components/mall/goods/ActivityGoods'
 
 Vue.use(Router);
 
@@ -70,6 +71,11 @@ export default new Router({
       path: '/detail',
       name: 'Detail',
       component: Detail
+    },
+    {
+      path: '/activityGoods',
+      name: 'ActivityGoods',
+      component: ActivityGoods
     }
   ]
 })
