@@ -7,17 +7,17 @@
         </transition-group>-->
         <div class="login-parent">
             <div class="item">
-                <h2>layuiAdmin</h2>
-                <p>layui 官方出品的单页面后台管理模板系统</p>
+                <h2>艾薇萌</h2>
+                <p>爱生活 微记录 萌动心声</p>
             </div>
             <div class="item">
-                <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="from.username"></el-input>
+                <el-input placeholder="请输入内容" prefix-icon="el-icon-user-solid" v-model="from.username"></el-input>
             </div>
             <div class="item">
-                <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="from.username"></el-input>
+                <el-input placeholder="请输入内容" prefix-icon="el-icon-lock" v-model="from.username"></el-input>
             </div>
             <div class="item">
-                <el-link type="primary">主要链接</el-link>
+                <el-link type="primary">忘记密码?</el-link>
             </div>
             <div class="item">
                 <el-button type="success" class="submit">成功按钮</el-button>
@@ -96,7 +96,7 @@
         position: relative;
     }
     .login-parent{
-        width: 350px;
+        width: 260px;
         height: 300px;
         background-color: rgba(255, 255, 255, .8);
         position: absolute;

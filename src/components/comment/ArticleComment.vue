@@ -51,7 +51,7 @@
 
 <script>
     export default {
-        name: "Blog",
+        name: "ArticleComment",
         data() {
             return {
                 currentPage4:4,

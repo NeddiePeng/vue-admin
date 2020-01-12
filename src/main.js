@@ -6,6 +6,10 @@ import router from './router'
 import ElementUI from 'element-ui';
 import './assets/css/reset.css'
 import 'element-ui/lib/theme-chalk/index.css';
+import {post} from './request/http'
+
+// 定义全局变量
+Vue.prototype.$post = post;
 
 Vue.use(ElementUI);
 

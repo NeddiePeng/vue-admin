@@ -51,7 +51,7 @@
 
 <script>
     export default {
-        name: "Blog",
+        name: "Soup",
         data() {
             return {
                 currentPage4:4,
