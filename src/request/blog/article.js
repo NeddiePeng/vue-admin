@@ -1,16 +1,16 @@
 /**
- * 博客活动
+ * 帖子列表
  * @type {string}
  */
-const $activity_api = '/activity/list';
+const $article_api = '/article/list';
 
 /**
- * 活动列表
+ * 帖子列表
  * @param context
  * @param params
  */
 function list(context, params = {}) {
-    context.$post($activity_api, params).then((response) => {
+    context.$post($article_api, params).then((response) => {
         if(response.code !== 200) {
             context.$message({
                 showClose: true,
@@ -20,11 +20,10 @@ function list(context, params = {}) {
                 center: true
             });
         }
-        context.activity_data = response.data;
-        context.activity_count = response.count;
+        context.article_data = response.data;
+        context.article_count = response.count;
     });
 }
-
 
 export {
     list

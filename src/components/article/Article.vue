@@ -19,10 +19,10 @@
             <el-table
                     :data="tableData"
                     style="width: 100%"
-                    stripe="true"
-                    border="true"
-                    highlight-current-row="true">
-                <el-table-column fixed prop="date" label="日期"></el-table-column>
+                    :stripe="true"
+                    :border="true"
+                    :highlight-current-row="true">
+                <el-table-column fixed prop="id" label="ID"></el-table-column>
                 <el-table-column prop="name" label="姓名"></el-table-column>
                 <el-table-column prop="province" label="省份"></el-table-column>
                 <el-table-column prop="city" label="市区"></el-table-column>
@@ -50,10 +50,13 @@
 </template>
 
 <script>
+    import {list} from '../../request/blog/article'
     export default {
         name: "Article",
         data() {
             return {
+                article_data:[],
+                article_count: 0,
                 currentPage4:4,
                 input: '',
                 tableHeight: window.innerHeight - 240,
@@ -269,6 +272,11 @@
                     zip: 200333
                 }]
             }
+        },
+        mounted() {
+            list(this, {
+                page: 1
+            });
         },
         methods: {
             handleSizeChange(val) {
