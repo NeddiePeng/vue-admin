@@ -26,6 +26,150 @@ function list(context, params = {}) {
 }
 
 
+/**
+ * 位置请求
+ * @type {string}
+ */
+const $mask_api = '/activity/positions';
+
+/**
+ * 位置请求
+ * @param context
+ * @param params
+ */
+function mask(context, params = {}) {
+    context.$post($mask_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.activity_mask = response.data;
+    });
+}
+
+
+/**
+ * 创建活动
+ * @type {string}
+ */
+const $create_api = '/activity/create';
+
+/**
+ * 创建活动
+ * @param context
+ * @param params
+ */
+function create(context, params = {}) {
+    context.$post($create_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.$message({
+            showClose: true,
+            message: '创建成功',
+            type: 'success',
+            offset: 100,
+            center: true
+        });
+        let _this = context;
+        setTimeout(function () {
+            _this.$router.go(-1);
+        }, 200);
+    });
+}
+
+
+/**
+ * 活动详情
+ * @type {string}
+ */
+const $detail_api = '/activity/detail';
+
+/**
+ * 活动详情
+ * @param context
+ * @param params
+ */
+function detail(context, params = {}) {
+    context.$post($detail_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.from_data = response.data;
+    });
+}
+
+/**
+ * 修改内容
+ * @type {string}
+ */
+const $update_api = '/activity/update';
+
+
+function update(context, params = {}) {
+    context.$post($update_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.$message({
+            showClose: true,
+            message: '修改成功',
+            type: 'success',
+            offset: 100,
+            center: true
+        });
+        let _this = context;
+        setTimeout(function () {
+            _this.$router.go(-1);
+        }, 200);
+    });
+}
+
+/**
+ * 修改状态
+ * @type {string}
+ */
+const $update_status_api = '/activity/update-status';
+
+
+function updateStatus(context, params = {}, index) {
+    context.$post($update_status_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.activity_data[index].status = params.status;
+    });
+}
+
 export {
-    list
+    list, mask, create, detail, update, updateStatus
 }

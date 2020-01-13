@@ -48,13 +48,13 @@ export default new Router({
                     path: '/article-comment',
                     name: 'ArticleComment',
                     component: () => import('@/components/comment/ArticleComment')
-                }
+                },
+                {
+                    path: '/add-activity',
+                    name: 'AddActivity',
+                    component: () => import('@/components/activity/Add')
+                },
             ]
-        },
-        {
-            path: '/add-activity',
-            name: 'AddActivity',
-            component: () => import('@/components/activity/Add')
         },
         {
             path: '/im-a',

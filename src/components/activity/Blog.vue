@@ -1,5 +1,5 @@
 <template>
-    <div class="container-node">
+    <div class="container-node-list">
         <div class="search">
             <div class="item">
                 <el-input v-model="input" placeholder="请输入内容"></el-input>
@@ -10,12 +10,12 @@
             <div class="item">
                 <el-input v-model="input" placeholder="请输入内容"></el-input>
             </div>
-            <div class="item submit">
+            <div class="item submit-search">
                 <el-button type="primary"  icon="el-icon-search">搜索</el-button>
-                <el-button type="success"  icon="el-icon-circle-plus-outline">创建活动</el-button>
+                <el-button type="success" icon="el-icon-circle-plus-outline" @click="add">创建活动</el-button>
             </div>
         </div>
-        <div class="content">
+        <div class="content-node">
             <el-table
                     :data="activity_data"
                     style="width: 100%"
@@ -45,9 +45,9 @@
                 </el-table-column>
                 <el-table-column label="操作" width="300">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="success" icon="el-icon-edit">编辑</el-button>
-                        <el-button size="mini" type="danger" icon="el-icon-delete" @click="open" v-if="scope.row.status == 1">隐藏</el-button>
-                        <el-button size="mini" type="primary" icon="el-icon-success" @click="open" v-if="scope.row.status == 2">显示</el-button>
+                        <el-button size="mini" type="success" icon="el-icon-edit" @click="detail(scope.row.id)">编辑</el-button>
+                        <el-button size="mini" type="danger" icon="el-icon-delete" @click="updateStatus(scope.row.id, 2, scope.$index)" v-if="scope.row.status == 1">隐藏</el-button>
+                        <el-button size="mini" type="primary" icon="el-icon-success" @click="updateStatus(scope.row.id, 1, scope.$index)" v-if="scope.row.status == 2">显示</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-    import {list} from '../../request/blog/activity';
+    import {list, updateStatus} from '../../request/blog/activity';
 
     export default {
         name: "Blog",
@@ -87,6 +87,24 @@
             });
         },
         methods: {
+            updateStatus(id, status, index) {
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    updateStatus(this, {
+                        id: id,
+                        status: status
+                    }, index);
+                }).catch(() => {});
+            },
+            detail(id) {
+                this.$router.push({path: '/add-activity',query:{id: id}});
+            },
+            add() {
+                this.$router.push({path:'/add-activity'})
+            },
             handleSizeChange(val) {
                 this.limit = val;
                 this.currentPage = 1;
@@ -101,23 +119,6 @@
                     page: val,
                     limit: this.limit
                 });
-            },
-            open() {
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
             }
         },
     }
@@ -129,17 +130,17 @@
         padding-top: 20px;
         text-align: right;
     }
-    .content{
+    .content-node{
         padding-top: 70px;
     }
-    .submit{
+    .submit-search{
         padding-left: 20px;
     }
     .item{
         float: left;
         padding-right: 5px;
     }
-    .container-node{
+    .container-node-list{
         padding: 20px 10px;
     }
 </style>

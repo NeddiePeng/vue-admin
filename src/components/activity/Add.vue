@@ -1,13 +1,13 @@
 <template>
     <div class="container-node">
-        <el-page-header @back="goBack" content="详情页面"></el-page-header>
+        <el-page-header @back="goBack" content="活动首页"></el-page-header>
         <div class="content">
             <el-row :gutter="10">
                 <el-col :span="10">
                     <div class="input-item">
-                        <label class="title">活动详情</label>
+                        <label class="title">活动名称</label>
                         <div class="input-right">
-                            <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
+                            <el-input v-model="from_data.title" placeholder="请输入内容"></el-input>
                         </div>
                     </div>
                 </el-col>
@@ -15,9 +15,11 @@
             <el-row :gutter="10">
                 <el-col :span="10">
                     <div class="input-item">
-                        <label class="title">活动详情</label>
+                        <label class="title">活动显示位置</label>
                         <div class="input-right">
-                            <el-select v-model="from_data.mask" placeholder="请选择"></el-select>
+                            <el-select v-model="from_data.mask_id" placeholder="请选择">
+                                <el-option v-for="(item, index) in activity_mask" :key="index" :value="item.id" :label="item.mask_title"></el-option>
+                            </el-select>
                         </div>
                     </div>
                 </el-col>
@@ -25,9 +27,23 @@
             <el-row :gutter="10">
                 <el-col :span="10">
                     <div class="input-item">
-                        <label class="title">活动详情</label>
+                        <label class="title">活动类型</label>
                         <div class="input-right">
-                            <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
+                            <el-select v-model="from_data.type" placeholder="请选择">
+                                <el-option key="article" label="文章" value="article"></el-option>
+                                <el-option key="link" label="外部链接" value="link"></el-option>
+                                <el-option key="content" label="文字说明" value="content"></el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="10" v-show="from_data.type != 'content'">
+                <el-col :span="15">
+                    <div class="input-item">
+                        <label class="title">活动跳转</label>
+                        <div class="input-right">
+                            <el-input v-model="from_data.link" placeholder="请输入内容"></el-input>
                         </div>
                     </div>
                 </el-col>
@@ -35,12 +51,14 @@
             <el-row :gutter="10">
                 <el-col :span="10">
                     <div class="input-item">
-                        <label class="title">活动详情</label>
+                        <label class="title">封面图</label>
                         <div class="input-right">
                             <el-upload
                                     class="avatar-uploader"
-                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    accept='image/*'
+                                    action="https://upload.qiniup.com"
                                     :show-file-list="false"
+                                    :data="qiniuData"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
                                 <img v-if="from_data.cover" :src="from_data.cover" class="avatar">
@@ -50,19 +68,19 @@
                     </div>
                 </el-col>
             </el-row>
-            <el-row :gutter="10">
+            <el-row :gutter="10" v-show="from_data.type == 'content'">
                 <el-col :span="15">
                     <div class="input-item">
-                        <label class="title">活动详情</label>
+                        <label class="title">活动说明</label>
                         <div class="input-right">
-                            <editor id='tinymce' v-model='from_data.tinymceHtml' :init='init'></editor>
+                            <editor id='tinymce' v-model='from_data.content' :init='init'></editor>
                         </div>
                     </div>
                 </el-col>
             </el-row>
             <div class="input-item submit">
-                <el-button type="danger">危险按钮</el-button>
-                <el-button>默认按钮</el-button>
+                <el-button type="danger" @click="handleSubmit">提交</el-button>
+                <el-button>取消</el-button>
             </div>
         </div>
     </div>
@@ -82,18 +100,24 @@
     import 'tinymce/plugins/wordcount'
     import 'tinymce/plugins/colorpicker'
     import 'tinymce/plugins/textcolor'
-
+    import {mask, create, detail, update} from "../../request/blog/activity";
+    import {getUploadToken} from "../../request/common";
 
     export default {
         name: "Add",
         data() {
           return {
               from_data: {
-                  name: '',
-                  mask: '',
+                  id: 0,
+                  title: '',
+                  mask_id: '',
                   cover: '',
-                  tinymceHtml: '请输入内容',
+                  content: '请输入内容',
+                  type: 'article',
+                  link: ''
               },
+              images_url: 'http://img.aiweimeng.top/',
+              activity_mask: [],
               init: {
                   language_url: '/static/tinymce/langs/zh_CN.js',
                   language: 'zh_CN',
@@ -106,33 +130,59 @@
                       const img = 'data:image/jpeg;base64,' + blobInfo.base64()
                       success(img)
                   }
+              },
+              qiniuData: {
+                  token : "",
+                  key : ""
               }
           }
         },
         mounted () {
-            tinymce.init({})
+            tinymce.init({});
+            let id = this.$route.query.id;
+            if(id) {
+                detail(this, {
+                    id: id
+                });
+            }
+            mask(this);
         },
         components: {Editor},
         methods: {
+            handleSubmit() {
+                if(this.from_data.id) {
+                    update(this, this.from_data);
+                } else {
+                    create(this, this.from_data);
+                }
+            },
             goBack() {
-                console.log('go back');
+                this.$router.go(-1);
             },
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = URL.createObjectURL(file.raw);
+            S4(){
+                return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
             },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
+            guid() {
+                return (this.S4()+this.S4()+"-"+this.S4()+"-"+this.S4()+"-"+this.S4()+"-"+this.S4()+this.S4()+this.S4());
+            },
+            handleAvatarSuccess(response, file) {
+                if(response) {
+                    this.from_data.cover = this.images_url + response.key;
+                    console.log(this.from_data.cover);
                 }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            }
-        }
+            },
+            beforeAvatarUpload() {
+                this.qiniuData.key = this.guid();
+            },
+            getToken() {
+                getUploadToken(this, {
+                    type: 'activity'
+                });
+            },
+        },
+        created(){
+            this.getToken();
+        },
     }
 </script>
 
@@ -155,6 +205,7 @@
         width: 100px;
         text-align: right;
         line-height: 40px;
+        font-size: 14px;
     }
     .input-item{
         padding-bottom: 20px;
