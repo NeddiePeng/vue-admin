@@ -52,6 +52,11 @@ export default new Router({
             ]
         },
         {
+            path: '/add-activity',
+            name: 'AddActivity',
+            component: () => import('@/components/activity/Add')
+        },
+        {
             path: '/login',
             name: 'Login',
             component: Login
