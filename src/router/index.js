@@ -57,6 +57,11 @@ export default new Router({
             component: () => import('@/components/activity/Add')
         },
         {
+            path: '/im-a',
+            name: 'Im',
+            component: () => import('@/components/im/Im')
+        },
+        {
             path: '/login',
             name: 'Login',
             component: Login

@@ -38,7 +38,15 @@
 
                     </el-main>
                     <el-footer class="send-content">
-
+                        <el-input
+                                type="textarea"
+                                :autosize="{ minRows: 5, maxRows: 6}"
+                                placeholder="请输入内容"
+                                v-model="from_data.content">
+                        </el-input>
+                        <div class="send-button">
+                            <el-button type="danger" size="small">危险按钮</el-button>
+                        </div>
                     </el-footer>
                 </el-container>
             </el-container>
@@ -49,24 +57,37 @@
 
 <script>
     export default {
-        name: "Im"
+        name: "Im",
+        data() {
+            return {
+                from_data: {
+                    content: ''
+                }
+            }
+        }
     }
 </script>
 
 <style>
+    .send-button{
+        padding-top: 5px;
+        text-align: right;
+        padding-right: 10px;
+    }
     .content{
         height: 372px;
     }
     .send-content{
         padding: 0;
         height: 158px!important;
-        border-top: 1px solid #F1F1F1;
+        border-bottom: 1px solid #DCDFE6;
     }
     .active-item{
-        background-color: white;
+        background-color: #F56C6C;
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         border-radius: 5px;
+        color: #1a1a1a!important;
     }
     .im-header{
         width: 100%;
@@ -75,12 +96,9 @@
         line-height: 70px;
         padding: 0 20px!important;
     }
-    .im-header > .el-avatar{
-        margin-top: 15px;
-    }
     .im-staff{
-        width: 200px;
-        background-color: #D9D9D9!important;
+        width: 200px!important;
+        background-color: #303133!important;
         padding: 5px;
         height: 600px;
     }
@@ -92,8 +110,9 @@
         overflow: hidden;
         margin-bottom: 5px;
         cursor: pointer;
+        color: white;
     }
-    .staff-item *{
+    .staff-item *, .im-header *{
         vertical-align: middle;
     }
     .staff-name{
