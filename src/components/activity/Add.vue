@@ -43,7 +43,7 @@
                                     :show-file-list="false"
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
-                                <img v-if="cover" :src="cover" class="avatar">
+                                <img v-if="from_data.cover" :src="from_data.cover" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
                         </div>
