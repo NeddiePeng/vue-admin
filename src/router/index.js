@@ -54,6 +54,41 @@ export default new Router({
                     name: 'AddActivity',
                     component: () => import('@/components/activity/Add')
                 },
+                {
+                    path: '/goods-list',
+                    name: 'GoodsList',
+                    component: () => import('@/components/mall/goods/List')
+                },
+                {
+                    path: '/order',
+                    name: 'Order',
+                    component: Order
+                },
+                {
+                    path: '/basic',
+                    name: 'Basic',
+                    component: Basic
+                },
+                {
+                    path: '/price',
+                    name: 'Price',
+                    component: Price
+                },
+                {
+                    path: '/attr',
+                    name: 'Attr',
+                    component: Attr
+                },
+                {
+                    path: '/combination',
+                    name: 'Combination',
+                    component: Combination
+                },
+                {
+                    path: '/detail',
+                    name: 'Detail',
+                    component: Detail
+                },
             ]
         },
         {
@@ -67,34 +102,9 @@ export default new Router({
             component: Login
         },
         {
-            path: '/order',
-            name: 'Order',
-            component: Order
-        },
-        {
-            path: '/basic',
-            name: 'Basic',
-            component: Basic
-        },
-        {
             path: '/price',
             name: 'Price',
             component: Price
-        },
-        {
-            path: '/attr',
-            name: 'Attr',
-            component: Attr
-        },
-        {
-            path: '/combination',
-            name: 'Combination',
-            component: Combination
-        },
-        {
-            path: '/detail',
-            name: 'Detail',
-            component: Detail
         },
         {
             path: '/activityGoods',

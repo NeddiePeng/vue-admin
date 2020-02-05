@@ -82,19 +82,19 @@
                         <i class="el-icon-s-help"></i>
                         <span slot="title">反馈管理</span>
                     </el-menu-item>
-                    <el-submenu index="/activity" v-show="activeIndex2 != 'blog' ? true : false">
+                    <el-submenu index="/goods" v-show="activeIndex2 != 'blog' ? true : false">
                         <template slot="title">
                             <i class="el-icon-s-ticket"></i>
                             <span slot="title">商品管理</span>
                         </template>
-                        <el-menu-item index="/activity">商品列表</el-menu-item>
+                        <el-menu-item index="/goods-list">商品列表</el-menu-item>
                     </el-submenu>
-                    <el-submenu index="/activity" v-show="activeIndex2 != 'blog' ? true : false">
+                    <el-submenu index="/order" v-show="activeIndex2 != 'blog' ? true : false">
                         <template slot="title">
                             <i class="el-icon-s-ticket"></i>
                             <span slot="title">订单管理</span>
                         </template>
-                        <el-menu-item index="/activity">商品列表</el-menu-item>
+                        <el-menu-item index="/order">商品列表</el-menu-item>
                     </el-submenu>
                 </el-menu>
             </el-aside>

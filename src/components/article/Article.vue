@@ -15,7 +15,7 @@
                 <el-button type="success"  icon="el-icon-circle-plus-outline">创建帖子</el-button>
             </div>
         </div>
-        <div class="content">
+        <div class="article-content">
             <el-table :data="article_data" style="width: 100%" :stripe="true" :border="true" :highlight-current-row="true">
                 <el-table-column fixed prop="id" label="ID" width="60"></el-table-column>
                 <el-table-column prop="title" label="标题"></el-table-column>
@@ -124,7 +124,7 @@
         padding-top: 20px;
         text-align: right;
     }
-    .content{
+    .article-content{
         padding-top: 70px;
     }
     .submit{

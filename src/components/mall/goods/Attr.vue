@@ -16,95 +16,76 @@
                     <el-step title="步骤 3" icon="el-icon-picture"></el-step>
                 </el-steps>
             </div>
-            <el-row :gutter="10">
+            <el-row :gutter="10" v-if="attrKey" v-for="(item, index) in attrKey" :key="index">
                 <el-col :span="24">
                     <div class="input-item">
-                        <label class="title">活动详情</label>
+                        <label class="title">{{item.attr_name}}</label>
                         <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
+                            <el-col style="padding-bottom: 5px" :span="3" :md="5" v-for="(list, index_i) in item.children" :key="index_i">
+                                <el-input v-model="list.name" placeholder="输入内容">
+                                    <el-button slot="append" icon="el-icon-delete" @click="delKey(index, index_i)"></el-button>
+                                </el-input>
                             </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
+                            <el-col :span="3" :md="5" style="padding-bottom: 5px"><el-button @click="addAttrKey(index)" type="primary" icon="el-icon-plus">添加{{item.attr_name}}</el-button></el-col>
                         </div>
                     </div>
                 </el-col>
             </el-row>
             <div class="input-item submit">
-                <el-button type="danger">危险按钮</el-button>
-                <el-button>默认按钮</el-button>
+                <el-button type="danger" @click="onSubmitData">立即提交</el-button>
+                <el-button>返回上一步</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {attrKeyData, addAttrValue} from "../../../request/mall/add";
+
     export default {
         name: "Attr",
         data() {
             return {
                 from_data: {
                     name: ''
-                }
+                },
+                attrKey: []
             }
+        },
+        methods: {
+            onSubmitData() {
+                let submit_data = [], symbol = 1;
+                for (let i = 0; i < this.attrKey.length; i++) {
+                    for (let j = 0; j < this.attrKey[i].children.length; j++) {
+                        symbol++;
+                        submit_data.push({
+                            key_id: this.attrKey[i]['id'],
+                            symbol: symbol,
+                            attr_value: this.attrKey[i].children[j].name
+                        });
+                    }
+                }
+                let goods_id = localStorage.getItem('product_id');
+                addAttrValue(this, {
+                    goods_id: goods_id,
+                    attr_list: submit_data
+                });
+            },
+            addAttrKey(index) {
+                this.attrKey[index].children.push({'name': ''});
+            },
+            delKey(index, index_i) {
+                if(this.attrKey[index].children.length == 1) {
+                    return;
+                }
+                this.attrKey[index].children.splice(index_i,1);
+            }
+        },
+        mounted() {
+            let goods_id = localStorage.getItem('product_id');
+            attrKeyData(this, {
+                goods_id: goods_id
+            })
         }
     }
 </script>

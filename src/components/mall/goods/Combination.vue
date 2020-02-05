@@ -19,217 +19,84 @@
             <el-row :gutter="10">
                 <el-col :span="24">
                     <div class="input-item">
-                        <label class="title">活动详情</label>
+                        <label class="title">商品属性组合</label>
                         <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
+                            <el-col :span="3" :md="5" class="attr-item"><div class="attr-title">属性组合</div></el-col>
+                            <el-col :span="3" :md="5" class="attr-item"><div class="attr-title">原价</div></el-col>
+                            <el-col :span="3" :md="5" class="attr-item"><div class="attr-title">会员价</div></el-col>
+                            <el-col :span="3" :md="5" class="attr-item"><div class="attr-title">库存</div></el-col>
                         </div>
                     </div>
                 </el-col>
-            </el-row>
-            <el-row :gutter="10">
                 <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="10">
-                <el-col :span="24">
-                    <div class="input-item">
-                        <label class="title">活动详情</label>
-                        <div class="input-right">
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-input v-model="from_data.name" placeholder="请输入内容"></el-input>
-                            </el-col>
-                            <el-col :span="3">
-                                <el-button type="danger">危险按钮</el-button>
-                            </el-col>
-                        </div>
+                    <div class="input-right" v-if="comData" v-for="(item, index) in comData" :key="index">
+                        <el-col :span="3" :md="5" class="attr-item">
+                            <el-input v-model="item.name" :disabled="true" placeholder="请输入内容"></el-input>
+                        </el-col>
+                        <el-col :span="3" :md="5" class="attr-item">
+                            <el-input v-model="item.price" placeholder="请输入价格"></el-input>
+                        </el-col>
+                        <el-col :span="3" :md="5" class="attr-item">
+                            <el-input v-model="item.vip_price" placeholder="请输入会员价"></el-input>
+                        </el-col>
+                        <el-col :span="3" :md="5" class="attr-item">
+                            <el-input v-model="item.stock" placeholder="请输入库存"></el-input>
+                        </el-col>
+                        <el-col :span="3" class="attr-item">
+                            <el-button type="danger" icon="el-icon-delete" @click="delAttr(index)">删除</el-button>
+                        </el-col>
                     </div>
                 </el-col>
             </el-row>
             <div class="input-item submit">
-                <el-button type="danger">危险按钮</el-button>
-                <el-button>默认按钮</el-button>
+                <el-button type="danger" @click="onSubmitData">立即提交</el-button>
+                <el-button>返回上一步</el-button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {attrComData, addComData} from "../../../request/mall/add";
+
     export default {
         name: "Combination",
         data() {
             return {
                 from_data: {
                     name: ''
-                }
+                },
+                comData:[]
             }
+        },
+        methods: {
+            onSubmitData() {
+                let goods_id = localStorage.getItem('product_id');
+                addComData(this, {
+                    goods_id: goods_id,
+                    sku_data: this.comData
+                });
+            },
+            delAttr(index) {
+                if(this.comData.length < 2) {
+                    return;
+                }
+                this.comData.splice(index, 1);
+            }
+        },
+        mounted() {
+            let goods_id = localStorage.getItem('product_id');
+            attrComData(this, {
+                goods_id: goods_id
+            })
         }
     }
 </script>
 
 <style>
+    .attr-item{
+        padding-bottom: 10px;
+    }
     .steps{
         padding-bottom: 50px;
         margin: 0 auto;

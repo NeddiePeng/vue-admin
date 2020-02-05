@@ -23,15 +23,14 @@
                         <div class="input-right">
                             <div class='tinymce'>
                                 <editor id='tinymce' v-model='tinymceHtml' :init='init'></editor>
-                                <div v-html='tinymceHtml'></div>
                             </div>
                         </div>
                     </div>
                 </el-col>
             </el-row>
             <div class="input-item submit">
-                <el-button type="danger">危险按钮</el-button>
-                <el-button>默认按钮</el-button>
+                <el-button type="danger" @click="onSubmitData">立即提交</el-button>
+                <el-button>返回上一步</el-button>
             </div>
         </div>
     </div>
@@ -51,6 +50,7 @@
     import 'tinymce/plugins/wordcount'
     import 'tinymce/plugins/colorpicker'
     import 'tinymce/plugins/textcolor'
+    import {addGoodsDetail} from "../../../request/mall/add";
 
     export default {
         name: "Detail",
@@ -71,6 +71,15 @@
                   }
               }
           }
+        },
+        methods: {
+            onSubmitData() {
+                let goods_id = localStorage.getItem('product_id');
+                addGoodsDetail(this, {
+                    goods_id: goods_id,
+                    content: this.tinymceHtml
+                });
+            }
         },
         mounted () {
             tinymce.init({})
