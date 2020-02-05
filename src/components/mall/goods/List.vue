@@ -17,19 +17,28 @@
         </div>
         <div class="goods-content-node">
             <el-table
-                    :data="tableData"
+                    :data="listDataList"
                     style="width: 100%"
                     :stripe="true"
                     :border="true"
                     :highlight-current-row="true">
                 <el-table-column fixed prop="id" label="ID" width="50"></el-table-column>
-                <el-table-column prop="name" label="分类"></el-table-column>
-                <el-table-column prop="province" label="商品名称"></el-table-column>
-                <el-table-column prop="city" label="原价格"></el-table-column>
-                <el-table-column prop="address" label="会员价"></el-table-column>
-                <el-table-column prop="zip" label="品牌"></el-table-column>
-                <el-table-column prop="date" label="创建时间"></el-table-column>
-                <el-table-column prop="date" label="状态"></el-table-column>
+                <el-table-column label="分类">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.category.name }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="name" label="商品名称"></el-table-column>
+                <el-table-column prop="price" label="原价格"></el-table-column>
+                <el-table-column prop="vip_price" label="会员价"></el-table-column>
+                <el-table-column prop="zip" label="品牌">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.brand.name }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="buy_num" label="已售数量" width="100"></el-table-column>
+                <el-table-column prop="create_time" label="创建时间"></el-table-column>
+                <el-table-column prop="status" label="状态"></el-table-column>
                 <el-table-column label="操作" width="300">
                     <el-button size="mini" type="success" icon="el-icon-edit">编辑</el-button>
                     <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
@@ -41,10 +50,10 @@
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
                         :current-page="currentPage"
-                        :page-sizes="[100, 200, 300, 400]"
-                        :page-size="100"
+                        :page-sizes="[15, 20, 30, 40]"
+                        :page-size="limit"
                         layout="total, sizes, prev, pager, next, jumper"
-                        :total="400">
+                        :total="total">
                 </el-pagination>
             </div>
         </div>
@@ -52,22 +61,18 @@
 </template>
 
 <script>
+    import {listData} from "../../../request/mall/goods";
+
     export default {
         name: "List",
         data() {
             return {
-                tableData: [{
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333,
-                    id:1
-                }],
+                listDataList: [],
                 currentPage: 1,
                 input: '',
                 tableHeight: window.innerHeight - 240,
+                limit: 15,
+                total: 0
             }
         },
         methods: {
@@ -80,11 +85,21 @@
             add() {
                 this.$router.push({path:'/basic'})
             }
+        },
+        mounted() {
+            listData(this, {
+                page: this.currentPage,
+                limit: this.limit
+            })
         }
     }
 </script>
 
 <style scoped>
+    .pagination{
+        padding-top: 20px;
+        text-align: right;
+    }
     .item{
         float: left;
         padding-right: 5px;
