@@ -194,11 +194,67 @@ function addGoodsDetail(context, params = {}) {
             });
             return;
         }
+        context.$router.push({path:'/activityGoods'});
+    });
+}
+
+
+/**
+ * 商品活动
+ * @type {string}
+ */
+const $activity_api = '/mall/activity/mall-activity';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function activityData(context, params = {}) {
+    context.$post($activity_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+            return;
+        }
+        context.activityDataList = response.data;
+    });
+}
+
+
+/**
+ * 增加商品活动
+ * @type {string}
+ */
+const $add_goods_activity_api = '/goods/create-goods-activity';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function addGoodsActivity(context, params = {}) {
+    context.$post($add_goods_activity_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+            return;
+        }
         context.$router.push({path:'/goods-list'});
     });
 }
 
 export {
     addBasic, addGoodsPrice, attrKeyData, addAttrValue, attrComData,
-    addComData, addGoodsDetail
+    addComData, addGoodsDetail, activityData, addGoodsActivity
 }

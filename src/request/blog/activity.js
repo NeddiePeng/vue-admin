@@ -170,6 +170,80 @@ function updateStatus(context, params = {}, index) {
     });
 }
 
+
+/**
+ * 商城限时购
+ * @type {string}
+ */
+const $mall_limit_group_api = '/mall_activity/group-buy';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function limitGroupData(context, params = {}) {
+    context.$post($mall_limit_group_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.activity_data = response.data;
+        context.activity_count = response.count;
+    });
+}
+
+/**
+ * 创建新的限时购
+ * @type {string}
+ */
+const $add_group_api = '/mall_activity/add-group';
+
+
+function addGroup(context, params = {}) {
+    context.$post($add_group_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+    });
+}
+
+
+/**
+ * 修改限时购状态
+ * @type {string}
+ */
+const $group_status_api = '/mall_activity/update-group-status';
+
+
+function updateGroupStatus(context, params = {}, index = 0) {
+    context.$post($group_status_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.activity_data[index].status = params.status;
+    });
+}
+
+
 export {
-    list, mask, create, detail, update, updateStatus
+    list, mask, create, detail, update, updateStatus,
+    limitGroupData, addGroup, updateGroupStatus
 }

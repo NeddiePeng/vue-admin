@@ -89,6 +89,14 @@
                         </template>
                         <el-menu-item index="/goods-list">商品列表</el-menu-item>
                     </el-submenu>
+                    <el-menu-item index="/mall-category" v-show="activeIndex2 != 'blog' ? true : false">
+                        <i class="el-icon-s-help"></i>
+                        <span slot="title">分类管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="/table" v-show="activeIndex2 != 'blog' ? true : false">
+                        <i class="el-icon-s-help"></i>
+                        <span slot="title">品牌管理</span>
+                    </el-menu-item>
                     <el-submenu index="/order" v-show="activeIndex2 != 'blog' ? true : false">
                         <template slot="title">
                             <i class="el-icon-s-ticket"></i>
@@ -96,6 +104,14 @@
                         </template>
                         <el-menu-item index="/order">商品列表</el-menu-item>
                     </el-submenu>
+                    <el-menu-item index="/limit-buy" v-show="activeIndex2 != 'blog' ? true : false">
+                        <i class="el-icon-s-help"></i>
+                        <span slot="title">限时购管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="/table" v-show="activeIndex2 != 'blog' ? true : false">
+                        <i class="el-icon-s-help"></i>
+                        <span slot="title">会员小礼物</span>
+                    </el-menu-item>
                 </el-menu>
             </el-aside>
             <el-container>

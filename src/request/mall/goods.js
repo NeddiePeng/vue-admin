@@ -25,6 +25,33 @@ function listData(context, params = {}) {
     });
 }
 
+/**
+ * 修改商品状态
+ * @type {string}
+ */
+const $update_status_api = '/goods/update-status';
+
+/**
+ *
+ * @param context
+ * @param params
+ * @param index
+ */
+function updateGoodsStatus(context, params = {}, index = 0) {
+    context.$post($update_status_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.listDataList[index].status = params.status;
+    });
+}
+
 export {
-    listData
+    listData, updateGoodsStatus
 }

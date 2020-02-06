@@ -89,6 +89,26 @@ export default new Router({
                     name: 'Detail',
                     component: Detail
                 },
+                {
+                    path: '/activityGoods',
+                    name: 'ActivityGoods',
+                    component: ActivityGoods
+                },
+                {
+                    path: '/limit-buy',
+                    name: 'LimitBuy',
+                    component: () => import('@/components/mall/limit/List')
+                },
+                {
+                    path: '/mall-category',
+                    name: 'MallCategory',
+                    component: () => import('@/components/mall/Category')
+                },
+                {
+                    path: '/brand-list',
+                    name: 'BrandList',
+                    component: () => import('@/components/mall/Brand')
+                }
             ]
         },
         {
@@ -100,16 +120,6 @@ export default new Router({
             path: '/login',
             name: 'Login',
             component: Login
-        },
-        {
-            path: '/price',
-            name: 'Price',
-            component: Price
-        },
-        {
-            path: '/activityGoods',
-            name: 'ActivityGoods',
-            component: ActivityGoods
         }
     ]
 })

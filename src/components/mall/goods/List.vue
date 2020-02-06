@@ -22,27 +22,44 @@
                     :stripe="true"
                     :border="true"
                     :highlight-current-row="true">
-                <el-table-column fixed prop="id" label="ID" width="50"></el-table-column>
+                <el-table-column fixed prop="id" label="ID"></el-table-column>
                 <el-table-column label="分类">
                     <template slot-scope="scope">
                         <span>{{ scope.row.category.name }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="name" label="商品名称"></el-table-column>
-                <el-table-column prop="price" label="原价格"></el-table-column>
-                <el-table-column prop="vip_price" label="会员价"></el-table-column>
-                <el-table-column prop="zip" label="品牌">
+                <el-table-column label="品牌">
                     <template slot-scope="scope">
                         <span>{{ scope.row.brand.name }}</span>
                     </template>
                 </el-table-column>
+                <el-table-column prop="name" label="商品名称"></el-table-column>
+                <el-table-column prop="cover" label="商品封面" width="100">
+                    <template slot-scope="scope">
+                        <el-image style="width: 80px; height: 50px" :src="scope.row.cover" fit="cover"></el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="price" label="原价格"></el-table-column>
+                <el-table-column prop="vip_price" label="会员价"></el-table-column>
                 <el-table-column prop="buy_num" label="已售数量" width="100"></el-table-column>
-                <el-table-column prop="create_time" label="创建时间"></el-table-column>
-                <el-table-column prop="status" label="状态"></el-table-column>
-                <el-table-column label="操作" width="300">
-                    <el-button size="mini" type="success" icon="el-icon-edit">编辑</el-button>
-                    <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
-                    <el-button size="mini" icon="el-icon-s-promotion">上架</el-button>
+                <el-table-column prop="create_time" width="160" label="创建时间"></el-table-column>
+                <el-table-column prop="status" label="状态">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status == 0">待审核</span>
+                        <span v-else-if="scope.row.status == 1">已上架</span>
+                        <span v-else-if="scope.row.status == 2">已下架</span>
+                        <span v-else-if="scope.row.status == 3">已售罄</span>
+                        <span v-else>已拒绝</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="300" fixed="right">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="success" icon="el-icon-edit">编辑</el-button>
+                        <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
+                        <el-button size="mini" @click="updateStatus(scope.row.id, 1, scope.$index)" v-if="scope.row.status == 0 || scope.row.status == 2" icon="el-icon-s-promotion">上架</el-button>
+                        <el-button size="mini" @click="updateStatus(scope.row.id, 2, scope.$index)" v-if="scope.row.status == 1" icon="el-icon-s-promotion">下架</el-button>
+                        <el-button size="mini" v-if="scope.row.status == 3" icon="el-icon-s-promotion">修改商品库存</el-button>
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="pagination">
@@ -61,7 +78,7 @@
 </template>
 
 <script>
-    import {listData} from "../../../request/mall/goods";
+    import {listData, updateGoodsStatus} from "../../../request/mall/goods";
 
     export default {
         name: "List",
@@ -76,11 +93,25 @@
             }
         },
         methods: {
+            updateStatus(goods_id, status, index) {
+                updateGoodsStatus(this, {
+                    goods_id: goods_id,
+                    status: status
+                }, index);
+            },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                this.limit = val;
+                listData(this, {
+                    page: this.currentPage,
+                    limit: val
+                });
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                this.currentPage = val;
+                listData(this, {
+                    page: this.currentPage,
+                    limit: this.limit
+                });
             },
             add() {
                 this.$router.push({path:'/basic'})
