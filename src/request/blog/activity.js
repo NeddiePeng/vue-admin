@@ -243,7 +243,86 @@ function updateGroupStatus(context, params = {}, index = 0) {
 }
 
 
+/**
+ * 增加限时购商品
+ * @type {string}
+ */
+const $add_limit_goods_api = '/mall/activity/add-limit-goods';
+
+
+function addLimitGoods(context, params = {}) {
+    context.$post($add_limit_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.this.dialogTableVisible = false;
+        context.multipleSelection = [];
+    });
+}
+
+
+/**
+ * 添加活动商品
+ * @type {string}
+ */
+const $add_activity_goods_api = '/mall/activity/add-activity-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function addActivityGoods(context, params = {}) {
+    context.$post($add_activity_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.dialogActivityVisible = false;
+        context.multipleSelection = [];
+    });
+}
+
+/**
+ * 添加会员小礼物
+ * @type {string}
+ */
+const $add_gift_goods_api = '/mall/activity/add-gift-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function addGiftGoods(context, params = {}) {
+    context.$post($add_gift_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.multipleSelection = [];
+    });
+}
+
+
 export {
     list, mask, create, detail, update, updateStatus,
-    limitGroupData, addGroup, updateGroupStatus
+    limitGroupData, addGroup, updateGroupStatus, addLimitGoods,
+    addActivityGoods, addGiftGoods
 }

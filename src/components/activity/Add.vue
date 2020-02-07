@@ -33,6 +33,7 @@
                                 <el-option key="article" label="文章" value="article"></el-option>
                                 <el-option key="link" label="外部链接" value="link"></el-option>
                                 <el-option key="content" label="文字说明" value="content"></el-option>
+                                <el-option key="goods" label="商品链接" value="goods"></el-option>
                             </el-select>
                         </div>
                     </div>
@@ -44,6 +45,16 @@
                         <label class="title">活动跳转</label>
                         <div class="input-right">
                             <el-input v-model="from_data.link" placeholder="请输入内容"></el-input>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="10">
+                <el-col :span="15" :md="15">
+                    <div class="input-item">
+                        <label class="title">活动简单描述</label>
+                        <div class="input-right">
+                            <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容" v-model="from_data.desc"></el-input>
                         </div>
                     </div>
                 </el-col>
@@ -69,7 +80,7 @@
                 </el-col>
             </el-row>
             <el-row :gutter="10" v-show="from_data.type == 'content'">
-                <el-col :span="15">
+                <el-col :span="15" :md="20">
                     <div class="input-item">
                         <label class="title">活动说明</label>
                         <div class="input-right">
@@ -114,7 +125,9 @@
                   cover: '',
                   content: '请输入内容',
                   type: 'article',
-                  link: ''
+                  link: '',
+                  object_type: 'blog',
+                  desc: ''
               },
               images_url: 'http://img.aiweimeng.top/',
               activity_mask: [],
@@ -127,7 +140,7 @@
                   toolbar: 'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink media image code | removeformat',
                   branding: false,
                   images_upload_handler: (blobInfo, success, failure) => {
-                      const img = 'data:image/jpeg;base64,' + blobInfo.base64()
+                      const img = 'data:image/jpeg;base64,' + blobInfo.base64();
                       success(img)
                   }
               },
@@ -138,6 +151,7 @@
           }
         },
         mounted () {
+            this.from_data.object_type = this.$route.query.type ? this.$route.query.type : 'blog';
             tinymce.init({});
             let id = this.$route.query.id;
             if(id) {

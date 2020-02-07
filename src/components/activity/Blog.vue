@@ -82,8 +82,11 @@
             }
         },
         mounted() {
+            this.type = this.$route.query.type ? this.$route.query.type : 'blog';
             list(this, {
-                page: 1
+                page: 1,
+                limit: this.limit,
+                type: this.type
             });
         },
         methods: {
@@ -100,24 +103,26 @@
                 }).catch(() => {});
             },
             detail(id) {
-                this.$router.push({path: '/add-activity',query:{id: id}});
+                this.$router.push({path: '/add-activity',query:{id: id, type: this.type}});
             },
             add() {
-                this.$router.push({path:'/add-activity'})
+                this.$router.push({path:'/add-activity', query: {type: this.type}})
             },
             handleSizeChange(val) {
                 this.limit = val;
                 this.currentPage = 1;
                 list(this, {
                     page: 1,
-                    limit: val
+                    limit: val,
+                    type: this.type
                 });
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
                 list(this, {
                     page: val,
-                    limit: this.limit
+                    limit: this.limit,
+                    type: this.type
                 });
             }
         },

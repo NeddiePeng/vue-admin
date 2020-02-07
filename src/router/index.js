@@ -108,6 +108,11 @@ export default new Router({
                     path: '/brand-list',
                     name: 'BrandList',
                     component: () => import('@/components/mall/Brand')
+                },
+                {
+                    path: '/mall-activity',
+                    name: 'MallActivity',
+                    component: () => import('@/components/activity/Blog')
                 }
             ]
         },

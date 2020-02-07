@@ -93,9 +93,13 @@
                         <i class="el-icon-s-help"></i>
                         <span slot="title">分类管理</span>
                     </el-menu-item>
-                    <el-menu-item index="/table" v-show="activeIndex2 != 'blog' ? true : false">
+                    <el-menu-item index="/brand-list" v-show="activeIndex2 != 'blog' ? true : false">
                         <i class="el-icon-s-help"></i>
                         <span slot="title">品牌管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="/mall-activity" :route="{path: '/mall-activity', query: {type: 'mall'}}" v-show="activeIndex2 != 'blog' ? true : false">
+                        <i class="el-icon-s-help"></i>
+                        <span slot="title">活动管理</span>
                     </el-menu-item>
                     <el-submenu index="/order" v-show="activeIndex2 != 'blog' ? true : false">
                         <template slot="title">
