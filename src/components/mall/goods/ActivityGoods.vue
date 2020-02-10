@@ -17,7 +17,7 @@
                     <el-step title="步骤 3" icon="el-icon-picture"></el-step>
                 </el-steps>
             </div>
-            <el-row :gutter="10" v-if="activityDataList.limit_time">
+            <el-row :gutter="10" v-if="activityDataList.limit_time.length > 0">
                 <el-col :span="24">
                     <div class="input-item">
                         <label class="title">限时购</label>
@@ -35,7 +35,7 @@
                     </div>
                 </el-col>
             </el-row>
-            <el-row :gutter="10" v-if="activityDataList.mall_activity">
+            <el-row :gutter="10" v-if="activityDataList.mall_activity.length > 0">
                 <el-col :span="24">
                     <div class="input-item">
                         <label class="title">广告活动</label>
@@ -53,7 +53,7 @@
                     </div>
                 </el-col>
             </el-row>
-            <el-row :gutter="10" v-if="activityDataList.is_exist_gift">
+            <el-row :gutter="10" v-if="activityDataList.is_exist_gift.length > 0">
                 <el-col :span="24">
                     <div class="input-item">
                         <label class="title">免费小礼物</label>
@@ -142,7 +142,7 @@
                 let data = {
                     group: group,
                     activity: activity,
-                    gift: this.from_data.gift,
+                    gift: this.activityDataList.is_exist_gift.length > 0 ? this.from_data.gift : [],
                     goods_id: goods_id
                 };
                 addGoodsActivity(this, data);
