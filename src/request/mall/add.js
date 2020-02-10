@@ -76,7 +76,7 @@ function attrKeyData(context, params = {}) {
             return;
         }
         for (let i = 0; i < response.data.length; i++) {
-            response.data[i].children = [{"name": ''}];
+            response.data[i].children = [{"name": '', 'img': ''}];
         }
         context.attrKey = response.data;
     });

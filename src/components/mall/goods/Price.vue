@@ -117,6 +117,16 @@
             <el-row :gutter="10">
                 <el-col :span="12" :md="20">
                     <div class="input-item">
+                        <label class="title">商品简单描述</label>
+                        <div class="input-right">
+                            <el-input v-model="from_data.name_desc" placeholder="商品描述"></el-input>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="10">
+                <el-col :span="12" :md="20">
+                    <div class="input-item">
                         <label class="title">商品属性</label>
                         <div class="input-right">
                             <el-input type="textarea" :rows="4" v-model="attr_value" placeholder="商品属性"></el-input>
@@ -131,7 +141,7 @@
             <el-row :gutter="10">
                 <el-col :span="12" :md="20">
                     <div class="input-item">
-                        <label class="title">商品简单描述</label>
+                        <label class="title">小编推荐</label>
                         <div class="input-right">
                             <el-input type="textarea" :rows="4" v-model="from_data.desc" placeholder="商品描述"></el-input>
                         </div>
@@ -198,7 +208,8 @@
                     seo: '',
                     attr: [],
                     images: [],
-                    postage_select: ''
+                    postage_select: '',
+                    name_desc: ''
                 },
                 options: [{
                     value: '0',

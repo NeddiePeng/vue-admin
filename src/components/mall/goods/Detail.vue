@@ -51,11 +51,18 @@
     import 'tinymce/plugins/colorpicker'
     import 'tinymce/plugins/textcolor'
     import {addGoodsDetail} from "../../../request/mall/add";
+    import axios from 'axios';
+    import {getUploadToken} from "../../../request/common";
 
     export default {
         name: "Detail",
         data() {
           return {
+              images_url: 'http://mall.img.aiweimeng.top/',
+              qiniuData: {
+                  token : "",
+                  key : ""
+              },
               tinymceHtml: '请输入内容',
               init: {
                   language_url: '/static/tinymce/langs/zh_CN.js',
@@ -66,18 +73,58 @@
                   toolbar: 'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink media image code | removeformat',
                   branding: false,
                   images_upload_handler: (blobInfo, success, failure) => {
-                      const img = 'data:image/jpeg;base64,' + blobInfo.base64()
-                      success(img)
+                      this.getToken();
+                      this.qiniuData.key = this.guid();
+                      let time = setInterval(() => {
+                          if(this.qiniuData.token) {
+                              clearInterval(time);
+                              this.uploadImage(blobInfo.blob(), success);
+                          }
+                      }, 1000);
                   }
               }
           }
         },
         methods: {
+            getToken() {
+                getUploadToken(this, {
+                    type: 'mall'
+                });
+            },
+            S4(){
+                return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            },
+            guid() {
+                return (this.S4()+this.S4()+"-"+this.S4()+"-"+this.S4()+"-"+this.S4()+"-"+this.S4()+this.S4()+this.S4());
+            },
             onSubmitData() {
                 let goods_id = localStorage.getItem('product_id');
                 addGoodsDetail(this, {
                     goods_id: goods_id,
                     content: this.tinymceHtml
+                });
+            },
+            uploadImage(file, success) {
+                let _this = this;
+                const axiosInstance = axios.create({withCredentials: false});
+                let data = new FormData();
+                data.append('token', this.qiniuData.token);
+                data.append('key', this.qiniuData.key);
+                data.append('file', file);
+                axiosInstance({
+                    method: 'POST',
+                    url: 'http://upload.qiniup.com/',
+                    data: data,
+                    timeout: 30000,
+                    onUploadProgress: (progressEvent) => {
+                        let imgLoadPercent = Math.round(progressEvent.loaded * 100 / progressEvent.total);
+                    },
+                }).then(data => {
+                    if(data.data) {
+                        success(_this.images_url + data.data.key);
+                    }
+                }).catch(function(err) {
+                    console.log(err);
                 });
             }
         },
