@@ -321,8 +321,61 @@ function addGiftGoods(context, params = {}) {
 }
 
 
+/**
+ * 增加口碑排行商品
+ * @type {string}
+ */
+const $add_comment_goods_api = '/mall/activity/add-comment-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function addCommentGoods(context, params = {}) {
+    context.$post($add_comment_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.multipleSelection = [];
+    });
+}
+
+/**
+ * 增加新品
+ * @type {string}
+ */
+const $add_new_api = '/mall/activity/add-new-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function addNewGoods(context, params = {}) {
+    context.$post($add_new_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.multipleSelection = [];
+    });
+}
+
+
 export {
     list, mask, create, detail, update, updateStatus,
     limitGroupData, addGroup, updateGroupStatus, addLimitGoods,
-    addActivityGoods, addGiftGoods
+    addActivityGoods, addGiftGoods, addCommentGoods, addNewGoods
 }

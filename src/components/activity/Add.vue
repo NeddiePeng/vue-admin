@@ -136,8 +136,8 @@
                   language: 'zh_CN',
                   skin_url: '/static/tinymce/skins/ui/oxide',
                   height: 500,
-                  plugins: 'link lists image media code table colorpicker textcolor wordcount contextmenu',
-                  toolbar: 'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink media image code | removeformat',
+                  plugins: 'link lists code table colorpicker textcolor wordcount contextmenu',
+                  toolbar: 'bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink code | removeformat',
                   branding: false,
                   images_upload_handler: (blobInfo, success, failure) => {
                       const img = 'data:image/jpeg;base64,' + blobInfo.base64();
@@ -182,7 +182,6 @@
             handleAvatarSuccess(response, file) {
                 if(response) {
                     this.from_data.cover = this.images_url + response.key;
-                    console.log(this.from_data.cover);
                 }
             },
             beforeAvatarUpload() {

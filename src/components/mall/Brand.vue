@@ -48,7 +48,6 @@
                     :data="activity_data"
                     style="width: 100%"
                     :stripe="true"
-                    :border="true"
                     :highlight-current-row="true">
                 <el-table-column fixed prop="id" label="ID" width="80"></el-table-column>
                 <el-table-column prop="name" label="品牌名称" width="150"></el-table-column>

@@ -1,5 +1,5 @@
 <template>
-    <div class="container-node-list">
+    <div class="container-node-list goods-list">
         <el-dialog title="加入限时购" :visible.sync="dialogTableVisible">
             <el-radio-group v-model="checkList.limit_id" v-if="activityDataList">
                 <el-radio v-if="activityDataList" v-for="(item, index) in activityDataList.limit_time" v-model="item.id" :key="index" :label="item.id" border>{{item.cycle_start + '-' + item.cycle_end}}</el-radio>
@@ -38,6 +38,8 @@
             <el-button @click="addLimit" size="mini" type="success" icon="el-icon-plus">加入限时购</el-button>
             <el-button @click="addActivity" size="mini" type="success" icon="el-icon-plus">加入活动</el-button>
             <el-button @click="addGiftGoods" size="mini" type="success" icon="el-icon-plus">加入小礼物</el-button>
+            <el-button @click="addCommentGoods" size="mini" type="success" icon="el-icon-plus">加入口碑排行</el-button>
+            <el-button @click="addNewGoods" size="mini" type="success" icon="el-icon-plus">加入每日新品</el-button>
         </div>
         <div class="goods-content-node">
             <el-table
@@ -46,31 +48,26 @@
                     :data="listDataList"
                     style="width: 100%"
                     :stripe="true"
-                    :border="true"
                     :highlight-current-row="true">
                 <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column fixed prop="id" label="ID"></el-table-column>
-                <el-table-column label="分类">
+                <el-table-column fixed prop="id" label="商品ID"></el-table-column>
+                <el-table-column prop="cover" label="商品图片" width="80">
+                    <template slot-scope="scope">
+                        <el-image style="width: 50px; height: 50px" :src="scope.row.cover" fit="cover"></el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="name" label="商品名称" width="300">
+                    <template slot-scope="scope">
+                        <div class="goods-name">{{ scope.row.name }}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品分类">
                     <template slot-scope="scope">
                         <span>{{ scope.row.category.name }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="品牌">
-                    <template slot-scope="scope">
-                        <span>{{ scope.row.brand.name }}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="name" label="商品名称"></el-table-column>
-                <el-table-column prop="cover" label="商品封面" width="100">
-                    <template slot-scope="scope">
-                        <el-image style="width: 80px; height: 50px" :src="scope.row.cover" fit="cover"></el-image>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="price" label="原价格"></el-table-column>
-                <el-table-column prop="vip_price" label="会员价"></el-table-column>
-                <el-table-column prop="buy_num" label="已售数量" width="100"></el-table-column>
-                <el-table-column prop="create_time" width="160" label="创建时间"></el-table-column>
-                <el-table-column prop="status" label="状态">
+                <el-table-column prop="buy_num" label="实际销量" width="100"></el-table-column>
+                <el-table-column prop="status" label="商品状态">
                     <template slot-scope="scope">
                         <span v-if="scope.row.status == 0">待审核</span>
                         <span v-else-if="scope.row.status == 1">已上架</span>
@@ -79,13 +76,14 @@
                         <span v-else>已拒绝</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="300" fixed="right">
+                <el-table-column prop="create_time" width="160" label="添加时间"></el-table-column>
+                <el-table-column label="操作" width="260" fixed="right">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="success" icon="el-icon-edit">编辑</el-button>
-                        <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
-                        <el-button size="mini" @click="updateStatus(scope.row.id, 1, scope.$index)" v-if="scope.row.status == 0 || scope.row.status == 2" icon="el-icon-s-promotion">上架</el-button>
-                        <el-button size="mini" @click="updateStatus(scope.row.id, 2, scope.$index)" v-if="scope.row.status == 1" icon="el-icon-s-promotion">下架</el-button>
-                        <el-button size="mini" v-if="scope.row.status == 3" icon="el-icon-s-promotion">修改商品库存</el-button>
+                        <el-button size="mini" plain type="success" icon="el-icon-edit">编辑</el-button>
+                        <el-button size="mini" plain type="danger" icon="el-icon-delete">删除</el-button>
+                        <el-button size="mini" plain @click="updateStatus(scope.row.id, 1, scope.$index)" v-if="scope.row.status == 0 || scope.row.status == 2" icon="el-icon-s-promotion">上架</el-button>
+                        <el-button size="mini" plain @click="updateStatus(scope.row.id, 2, scope.$index)" v-if="scope.row.status == 1" icon="el-icon-s-promotion">下架</el-button>
+                        <el-button size="mini" plain v-if="scope.row.status == 3" icon="el-icon-s-promotion">修改商品库存</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -107,7 +105,7 @@
 <script>
     import {listData, updateGoodsStatus} from "../../../request/mall/goods";
     import {activityData} from "../../../request/mall/add";
-    import {addLimitGoods, addActivityGoods, addGiftGoods} from "../../../request/blog/activity";
+    import {addLimitGoods, addActivityGoods, addGiftGoods, addCommentGoods, addNewGoods} from "../../../request/blog/activity";
 
     export default {
         name: "List",
@@ -130,6 +128,16 @@
             }
         },
         methods: {
+            addNewGoods() {
+                addNewGoods(this, {
+                    goods_ids: this.multipleSelection
+                });
+            },
+            addCommentGoods() {
+                addCommentGoods(this, {
+                    goods_ids: this.multipleSelection
+                });
+            },
             addGiftGoods() {
                 addGiftGoods(this, {
                     goods_ids: this.multipleSelection
@@ -193,6 +201,9 @@
 </script>
 
 <style scoped>
+    .goods-list .el-button+.el-button{
+        margin-left: 3px;
+    }
     .all-add{
         padding-top: 15px;
     }
@@ -212,5 +223,10 @@
     }
     .goods-content-node{
         padding-top: 20px;
+    }
+    .goods-name{
+        height: 40px;
+        display: block;
+        overflow: hidden;
     }
 </style>

@@ -41,7 +41,6 @@
                     :data="activity_data"
                     style="width: 100%"
                     :stripe="true"
-                    :border="true"
                     :highlight-current-row="true">
                 <el-table-column fixed prop="id" label="ID" width="80"></el-table-column>
                 <el-table-column prop="cycle_start" label="开始时间">

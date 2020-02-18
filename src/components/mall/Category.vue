@@ -1,7 +1,6 @@
 <template>
     <div class="container-node-list">
-        <div>
-            <el-dialog title="修改分类" :visible.sync="dialogFormVisible" width="30%">
+        <div><el-dialog title="修改分类" :visible.sync="dialogFormVisible" width="30%">
                 <el-form label-width="80px">
                     <el-form-item label="顶级分类">
                         <el-select v-model="form.pid" placeholder="请选择">
@@ -29,29 +28,14 @@
                     <el-button @click="dialogFormVisible = false">取 消</el-button>
                     <el-button type="primary" @click="onSubmitData">确 定</el-button>
                 </div>
-            </el-dialog>
-        </div>
-        <div class="search">
-            <div class="item">
-                <el-input v-model="input" placeholder="请输入内容"></el-input>
-            </div>
-            <div class="item">
-                <el-select v-model="input" placeholder="请选择"></el-select>
-            </div>
-            <div class="item">
-                <el-input v-model="input" placeholder="请输入内容"></el-input>
-            </div>
-            <div class="item submit-search">
-                <el-button type="primary"  icon="el-icon-search">搜索</el-button>
-                <el-button type="success" icon="el-icon-circle-plus-outline" @click="add">创建分类</el-button>
-            </div>
-        </div>
-        <div class="content-node">
+            </el-dialog></div>
+        <div class="tip"><p>注：商品分类最多添加2级，分类图片可参考 分类页模板 上传</p></div>
+        <el-button type="success" size="small" @click="add"><i class="el-icon-plus"></i>新增</el-button>
+        <div class="content-node" style="padding-top: 20px">
             <el-table
                     :data="activity_data"
                     style="width: 100%"
                     :stripe="true"
-                    :border="true"
                     :highlight-current-row="true">
                 <el-table-column fixed prop="id" label="ID" width="80"></el-table-column>
                 <el-table-column prop="pid" label="所属分类">
@@ -72,11 +56,12 @@
                         <el-link type="warning" v-if="scope.row.status == 1">不显示</el-link>
                     </template>
                 </el-table-column>
+                <el-table-column label="添加时间" width="160" prop="create_time"></el-table-column>
                 <el-table-column label="操作" width="300">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="success" icon="el-icon-edit" @click="detail(scope.row.id)">编辑</el-button>
-                        <el-button size="mini" type="danger" icon="el-icon-delete" @click="updateStatus(scope.row.id, 2, scope.$index)" v-if="scope.row.status == 0">隐藏</el-button>
-                        <el-button size="mini" type="primary" icon="el-icon-success" @click="updateStatus(scope.row.id, 1, scope.$index)" v-if="scope.row.status == 1">显示</el-button>
+                        <el-button size="mini" plain type="success" icon="el-icon-edit" @click="detail(scope.row.id)">编辑</el-button>
+                        <el-button size="mini" plain type="danger" icon="el-icon-delete" @click="updateStatus(scope.row.id, 2, scope.$index)" v-if="scope.row.status == 0">隐藏</el-button>
+                        <el-button size="mini" plain type="primary" icon="el-icon-success" @click="updateStatus(scope.row.id, 1, scope.$index)" v-if="scope.row.status == 1">显示</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -246,5 +231,20 @@
     }
     .container-node-list{
         padding: 20px 10px;
+    }
+
+
+    .tip {
+        padding: 8px 16px;
+        background-color: #ecf8ff;
+        border-radius: 4px;
+        border-left: 5px solid #50bfff;
+        margin: 0 0 20px;
+    }
+    .tip p {
+        font-size: 14px;
+        color: #5e6d82;
+        line-height: 1.5em;
+        padding: 10px 0;
     }
 </style>

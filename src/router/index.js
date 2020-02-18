@@ -113,6 +113,31 @@ export default new Router({
                     path: '/mall-activity',
                     name: 'MallActivity',
                     component: () => import('@/components/activity/Blog')
+                },
+                {
+                    path: '/mall-comment',
+                    name: 'MallComment',
+                    component: () => import('@/components/mall/goods/Comment')
+                },
+                {
+                    path: '/mall-coupon',
+                    name: 'MallCoupon',
+                    component: () => import('@/components/mall/Coupon')
+                },
+                {
+                    path: '/get-mall-coupon',
+                    name: 'MallCouponList',
+                    component: () => import('@/components/mall/CouponList')
+                },
+                {
+                    path: '/activity-goods',
+                    name: 'ActivityGoods',
+                    component: () => import('@/components/mall/ActivityGoods')
+                },
+                {
+                    path: '/limit-goods',
+                    name: 'LimitGoods',
+                    component: () => import('@/components/mall/limit/LimitGoods')
                 }
             ]
         },
