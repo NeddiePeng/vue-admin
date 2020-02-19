@@ -374,8 +374,231 @@ function addNewGoods(context, params = {}) {
 }
 
 
+/**
+ * 活动商品
+ * @type {string}
+ */
+const $activity_goods_api = '/mall/activity/activity-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function activityGoods(context, params = {}) {
+    context.$post($activity_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list = response.data;
+        context.count = response.count;
+    });
+}
+
+
+/**
+ * 删除活动商品
+ * @type {string}
+ */
+const $del_goods_api = '/mall/activity/del-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ * @param index
+ */
+function delGoods(context, params = {}, index) {
+    context.$post($del_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list.splice(index, 1);
+    });
+}
+
+
+/**
+ * 礼券列表
+ * @type {string}
+ */
+const $coupon_list_api = '/mall/activity/voucher-list';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function couponListData(context, params = {}) {
+    context.$post($coupon_list_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list = response.data;
+        context.count = response.count;
+    });
+}
+
+
+/**
+ * 添加优惠券
+ * @type {string}
+ */
+const $add_coupon_api = '/mall/activity/add-voucher';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function addCouponData(context, params = {}) {
+    context.$post($add_coupon_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.dialogVisible = false;
+    });
+}
+
+
+/**
+ * 优惠券详情
+ * @type {string}
+ */
+const $coupon_detail_api = '/mall/activity/coupon-detail';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function couponDetail(context, params = {}) {
+    context.$post($coupon_detail_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.form = response.data;
+        context.dialogVisible = true;
+    });
+}
+
+
+/**
+ * 修改优惠券
+ * @type {string}
+ */
+const $update_coupon_api = '/mall/activity/update-coupon';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function updateCoupon(context, params = {}) {
+    context.$post($update_coupon_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.dialogVisible = false;
+    });
+}
+
+
+/**
+ * 修改优惠券状态
+ * @type {string}
+ */
+const $update_coupon_status = '/mall/activity/update-status';
+
+/**
+ *
+ * @param context
+ * @param params
+ * @param index
+ */
+function updateVoucherStatus(context, params = {}, index) {
+    context.$post($update_coupon_status, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list[index].status = params.status;
+    });
+}
+
+
+/**
+ * 领取记录
+ * @type {string}
+ */
+const $draw_list_api = '/mall/activity/draw-voucher';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function drawListData(context, params = {}) {
+    context.$post($draw_list_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list = response.data;
+        context.total = response.count;
+    });
+}
+
 export {
     list, mask, create, detail, update, updateStatus,
     limitGroupData, addGroup, updateGroupStatus, addLimitGoods,
-    addActivityGoods, addGiftGoods, addCommentGoods, addNewGoods
+    addActivityGoods, addGiftGoods, addCommentGoods, addNewGoods,
+    activityGoods, delGoods, couponListData, addCouponData, couponDetail,
+    updateCoupon, updateVoucherStatus, drawListData
 }

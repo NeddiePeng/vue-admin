@@ -2,21 +2,28 @@
     <div class="container-node-list">
         <el-dialog
                 title="添加活动商品"
-                :visible.sync="dialogVisible"
+                :visible.sync="dialogActivityVisible"
                 width="35%"
                 :before-close="handleClose">
             <el-form ref="form" :model="form" label-width="100px">
                 <el-form-item label="商品ID">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.goods_id"></el-input>
                     <p class="input-tip">可在 <el-link type="primary" :underline="false">商品管理 - 商品列表</el-link> 中查看</p>
                 </el-form-item>
                 <el-form-item label="选择活动">
-                    <el-select v-model="form.name" placeholder="请选择"></el-select>
+                    <el-select v-model="form.activity_id" placeholder="请选择">
+                        <el-option label="请选择" value="0"></el-option>
+                        <el-option v-for="(item, index) in activityDataList.mall_activity"
+                                :key="index"
+                                :label="item.title"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    <el-button @click="dialogActivityVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addGoods">确 定</el-button>
   </span>
         </el-dialog>
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -39,37 +46,35 @@
             </el-row>
         </div>
         <div class="content-node" style="padding-top: 20px">
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column prop="id" label="活动商品ID" width="100"></el-table-column>
-                <el-table-column prop="address" label="商品信息" width="350">
+            <el-table :data="list" stripe style="width: 100%">
+                <el-table-column prop="goods_id" label="活动商品ID" width="100"></el-table-column>
+                <el-table-column label="商品信息" width="350">
                     <template slot-scope="scope">
                         <div class="goods-info activity-goods-data">
                             <el-row>
                                 <el-col :span="6">
-                                    <el-image style="width: 72px; height: 72px" src="http://static.yoshop.xany6.com/2018071718294208f086786.jpg" fit="cover"></el-image>
+                                    <el-image style="width: 72px; height: 72px" :src="scope.row.goods.cover" fit="cover"></el-image>
                                 </el-col>
                                 <el-col :span="18">
                                     <div class="goods-name-sku">
-                                        <p class="goods-name">荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机 </p>
-                                        <p class="goods-sku">颜色:炫影蓝; 版本:4+64G;</p>
+                                        <p class="goods-name">{{scope.row.goods.name}}</p>
                                     </div>
                                 </el-col>
                             </el-row>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="num" label="累计销量" width="90"></el-table-column>
-                <el-table-column prop="num" label="库存总量" width="90"></el-table-column>
-                <el-table-column prop="num" label="排序" width="90"></el-table-column>
-                <el-table-column prop="num" label="状态" width="100">
+                <el-table-column prop="buy_stock" label="累计销量" width="90"></el-table-column>
+                <el-table-column prop="num" label="库存总量" width="90">
                     <template slot-scope="scope">
-                        <div class="goods-name">{{ scope.row.name }}</div>
+                        <span>{{scope.row.goods.total_stock}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="date" label="创建时间" width="150"></el-table-column>
-                <el-table-column prop="address" label="操作" width="120" fixed="right">
+                <el-table-column prop="id" label="排序" width="90"></el-table-column>
+                <el-table-column prop="create_time" label="创建时间" width="150"></el-table-column>
+                <el-table-column label="操作" width="120" fixed="right">
                     <template slot-scope="scope">
-                        <el-button size="mini" plain type="danger" icon="el-icon-delete">删除</el-button>
+                        <el-button size="mini" plain type="danger" icon="el-icon-delete" @click="delGoodsData(scope.row.id, scope.$index)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -81,7 +86,7 @@
                         :page-sizes="[15, 20, 30, 40]"
                         :page-size="limit"
                         layout="total, sizes, prev, pager, next, jumper"
-                        :total="total">
+                        :total="count">
                 </el-pagination>
             </div>
         </div>
@@ -89,50 +94,74 @@
 </template>
 
 <script>
+    import {activityGoods, delGoods, addActivityGoods} from "../../request/blog/activity";
+    import {activityData} from "../../request/mall/add";
+
     export default {
         name: "ActivityGoods",
         data() {
             return {
                 form: {
-                    name: ''
+                    goods_id: 0,
+                    activity_id: '0'
                 },
                 textarea: '',
-                dialogVisible: false,
+                dialogActivityVisible: false,
                 total: 0,
                 currentPage: 1,
                 limit: 15,
                 input: '',
-                tableData: [{
-                    id: 1,
-                    date: '2016-05-02 10:00:00',
-                    name: '已售罄',
-                    address: '上海市普陀区金沙',
-                    url: 'http://static.yoshop.xany6.com/2018071718294208f086786.jpg',
-                    num: 10,
-                    status: 1
-                }]
+                list: [],
+                count: 0,
+                activityDataList: []
             }
         },
         methods: {
-            handleCurrentChange() {
-
+            addGoods() {
+                addActivityGoods(this, {
+                    goods_ids: [this.form.goods_id],
+                    activity_id: this.form.activity_id
+                });
             },
-            handleSizeChange() {
-
+            delGoodsData(id, index) {
+                delGoods(this, {
+                    id: id
+                }, index);
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                activityGoods(this, {
+                    page: this.currentPage,
+                    limit: this.limit
+                });
+            },
+            handleSizeChange(val) {
+                this.limit = val;
+                activityGoods(this, {
+                    page: this.currentPage,
+                    limit: this.limit
+                });
             },
             handleClose() {
-
+                this.dialogActivityVisible = false;
             },
             replayComment() {
-                if(this.dialogVisible) {
-                    this.dialogVisible = false;
+                if(this.dialogActivityVisible) {
+                    this.dialogActivityVisible = false;
                 } else {
-                    this.dialogVisible = true;
+                    this.dialogActivityVisible = true;
                 }
             },
             add() {
-                this.dialogVisible = true;
+                this.dialogActivityVisible = true;
             }
+        },
+        mounted() {
+            activityGoods(this, {
+                page: this.currentPage,
+                limit: this.limit
+            });
+            activityData(this);
         }
     }
 </script>
@@ -161,7 +190,7 @@
     }
     .goods-name-sku{
         padding: 0 10px 10px 0;
-        margin-top: 10px;
+        margin-top: 25px;
     }
     .goods-info.activity-goods-data .el-image{
         margin-top: 10px;

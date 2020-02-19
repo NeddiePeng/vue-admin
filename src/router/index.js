@@ -138,6 +138,11 @@ export default new Router({
                     path: '/limit-goods',
                     name: 'LimitGoods',
                     component: () => import('@/components/mall/limit/LimitGoods')
+                },
+                {
+                    path: '/order-detail',
+                    name: 'LimitGoods',
+                    component: () => import('@/components/mall/order/Detail')
                 }
             ]
         },

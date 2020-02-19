@@ -40,226 +40,90 @@
                 </el-row>
             </div>
             <div class="content-order-list">
-                <div class="order-item">
+                <div class="order-item" v-if="orderData && orderData.length > 0" v-for="(item, index) in orderData" :key="index">
                     <p class="order-num">
-                        <span class="am-margin-right-lg"> 2018-08-02 17:43:39</span>
-                        <span class="am-margin-right-lg">订单号：2018080298545157</span>
+                        <span class="am-margin-right-lg"> {{item.create_time}}</span>
+                        <span class="am-margin-right-lg">订单号：{{item.order_no}}</span>
                     </p>
                     <el-row>
                         <el-col :span="7">
-                            <div class="goods-info">
+                            <div class="goods-info" v-for="(goods, i) in item.goods" :key="i">
                                 <el-row>
                                     <el-col :span="6">
-                                        <el-image style="width: 72px; height: 72px" src="http://static.yoshop.xany6.com/2018071718294208f086786.jpg" fit="cover"></el-image>
+                                        <el-image style="width: 72px; height: 72px" :src="goods.goods.cover" fit="cover"></el-image>
                                     </el-col>
                                     <el-col :span="18">
                                         <div class="goods-name-sku">
-                                            <p class="goods-name">荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机 </p>
-                                            <p class="goods-sku">颜色:炫影蓝; 版本:4+64G;</p>
+                                            <p class="goods-name">{{goods.goods.name}}</p>
+                                            <p class="goods-sku">
+                                                <span v-for="(sku, m) in goods.sku.value" :key="m">{{sku.attr_value + '；'}}</span>
+                                            </p>
                                         </div>
                                     </el-col>
                                 </el-row>
                             </div>
                         </el-col>
                         <el-col :span="2">
-                            <div class="order-goods-num">
-                                <p>￥1899.00</p>
-                                <p>×1</p>
+                            <div class="order-goods-num" v-for="(goods, i) in item.goods" :key="i">
+                                <p>￥{{goods.buy_price}}</p>
+                                <p>×{{goods.goods_num}}</p>
                             </div>
                         </el-col>
                         <el-col :span="3">
-                            <div class="order-goods-num">
-                                <p>￥1899.00</p>
-                                <p>(含运费：￥0.00)</p>
+                            <div class="order-goods-num" :style="'height: '+ height * item.count +'px'">
+                                <p :style="'padding-top:'+ padding_two * item.count +'px'">￥{{item.total_price}}</p>
+                                <p>(含运费：￥{{item.postage}})</p>
                             </div>
                         </el-col>
                         <el-col :span="2">
-                            <div class="order-goods-num">
-                                <p>下***己</p>
-                                <p>(用户id：10226)</p>
+                            <div class="order-goods-num" :style="'height: '+ height * item.count +'px'">
+                                <p :style="'padding-top:'+ padding_two * item.count +'px'">{{item.user.nickname}}</p>
+                                <p>(用户id：{{item.user_id}})</p>
                             </div>
                         </el-col>
                         <el-col :span="2">
-                            <div class="order-goods-num" style="line-height: 90px;text-align: center">
-                                <el-tag size="mini" type="success" effect="dark">微信支付</el-tag>
+                            <div class="order-goods-num" :style="'height: '+ height * item.count +'px;text-align: center;line-height:'+ height * item.count +'px'">
+                                <el-tag size="mini" type="success" effect="dark" v-if="item.method == 'WECHAT_H5'">微信H5支付</el-tag>
+                                <el-tag size="mini" type="success" effect="dark" v-if="item.method == 'WECHAT_APP'">微信APP支付</el-tag>
+                                <el-tag size="mini" effect="dark" v-if="item.method == 'ALIPAY_APP' || item.method == 'ALIPAY_H5'">支付宝支付</el-tag>
                             </div>
                         </el-col>
                         <el-col :span="2">
-                            <div class="order-goods-num" style="line-height: 90px;text-align: center">
+                            <div class="order-goods-num" :style="'height: '+ height * item.count +'px;text-align: center;line-height:'+ height * item.count +'px'">
                                 <el-tag size="mini" type="success" effect="dark">快递配送</el-tag>
                             </div>
                         </el-col>
                         <el-col :span="3">
-                            <div class="order-goods-num order-status">
-                                <p>付款状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>发货状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>收货状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
+                            <div class="order-goods-num order-status" :style="'height:'+ height * item.count + 'px'">
+                                <div class="order-status-list">
+                                    <p>
+                                        付款状态：
+                                        <el-tag size="mini" effect="dark" v-if="item.status == 0 || item.status == 3">待付款</el-tag>
+                                        <el-tag size="mini" type="success" effect="dark" v-else>已付款</el-tag>
+                                    </p>
+                                    <p v-if="item.status != 0 && item.status != 3">发货状态：
+                                        <el-tag size="mini" type="warning" effect="dark" v-if="item.status == 1">待发货</el-tag>
+                                        <el-tag size="mini" type="success" effect="dark" v-else>已发货</el-tag>
+                                    </p>
+                                    <p v-if="item.status != 0 && item.status != 3 && (item.status == 2 || item.status == 4)">收货状态：
+                                        <el-tag size="mini" type="success" effect="dark" v-if="item.status == 2">待发货</el-tag>
+                                        <el-tag size="mini" type="success" effect="dark" v-else>已收货</el-tag>
+                                    </p>
+                                    <p>订单状态：
+                                        <el-tag size="mini" effect="dark" v-if="item.status == 0">待付款</el-tag>
+                                        <el-tag size="mini" type="warning" effect="dark" v-if="item.status == 1">待发货</el-tag>
+                                        <el-tag size="mini" type="info" effect="dark" v-if="item.status == 2">待收货</el-tag>
+                                        <el-tag size="mini" type="info" effect="dark" v-if="item.status == 3">已取消</el-tag>
+                                        <el-tag size="mini" effect="dark" v-if="item.status == 4">待评价</el-tag>
+                                        <el-tag size="mini" type="danger" effect="dark" v-if="item.status == 5">已退款</el-tag>
+                                        <el-tag size="mini" type="success" effect="dark" v-if="item.status == 6">已完成</el-tag>
+                                        <el-tag size="mini" type="danger" effect="dark" v-if="item.status == -1">退款处理</el-tag>
+                                    </p>
+                                </div>
                             </div>
                         </el-col>
                         <el-col :span="3">
-                            <div class="order-handle" style="line-height: 90px;text-align: center">
-                                <el-button size="small">订单详情</el-button>
-                            </div>
-                        </el-col>
-                    </el-row>
-                </div>
-                <div class="order-item">
-                    <p class="order-num">
-                        <span class="am-margin-right-lg"> 2018-08-02 17:43:39</span>
-                        <span class="am-margin-right-lg">订单号：2018080298545157</span>
-                    </p>
-                    <el-row>
-                        <el-col :span="7">
-                            <div class="goods-info">
-                                <el-row>
-                                    <el-col :span="6">
-                                        <el-image style="width: 72px; height: 72px" src="http://static.yoshop.xany6.com/2018071718294208f086786.jpg" fit="cover"></el-image>
-                                    </el-col>
-                                    <el-col :span="18">
-                                        <div class="goods-name-sku">
-                                            <p class="goods-name">荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机 </p>
-                                            <p class="goods-sku">颜色:炫影蓝; 版本:4+64G;</p>
-                                        </div>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                            <div class="goods-info">
-                                <el-row>
-                                    <el-col :span="6">
-                                        <el-image style="width: 72px; height: 72px" src="http://static.yoshop.xany6.com/2018071718294208f086786.jpg" fit="cover"></el-image>
-                                    </el-col>
-                                    <el-col :span="18">
-                                        <div class="goods-name-sku">
-                                            <p class="goods-name">荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机 </p>
-                                            <p class="goods-sku">颜色:炫影蓝; 版本:4+64G;</p>
-                                        </div>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num">
-                                <p>￥1899.00</p>
-                                <p>×1</p>
-                            </div>
-                            <div class="order-goods-num">
-                                <p>￥1899.00</p>
-                                <p>×1</p>
-                            </div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px'">
-                                <p style="padding-top: 60px">￥1899.00</p>
-                                <p>(含运费：￥0.00)</p>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px'">
-                                <p style="padding-top: 60px">下***己</p>
-                                <p>(用户id：10226)</p>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px;text-align: center;line-height:'+ height * num +'px'">
-                                <el-tag size="mini" type="success" effect="dark">微信支付</el-tag>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px;text-align: center;line-height:'+ height * num +'px'">
-                                <el-tag size="mini" type="success" effect="dark">快递配送</el-tag>
-                            </div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="order-goods-num order-status" :style="'height:'+ height * num + 'px'">
-                                <p :style="'padding-top:'+ padding * num + 'px'">付款状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>发货状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>收货状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>订单状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                            </div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="order-handle" :style="'height: '+ height * num +'px;text-align: center;line-height:'+ height * num +'px'">
-                                <el-button size="small">订单详情</el-button>
-                            </div>
-                        </el-col>
-                    </el-row>
-                </div>
-                <div class="order-item">
-                    <p class="order-num">
-                        <span class="am-margin-right-lg"> 2018-08-02 17:43:39</span>
-                        <span class="am-margin-right-lg">订单号：2018080298545157</span>
-                    </p>
-                    <el-row>
-                        <el-col :span="7">
-                            <div class="goods-info">
-                                <el-row>
-                                    <el-col :span="6">
-                                        <el-image style="width: 72px; height: 72px" src="http://static.yoshop.xany6.com/2018071718294208f086786.jpg" fit="cover"></el-image>
-                                    </el-col>
-                                    <el-col :span="18">
-                                        <div class="goods-name-sku">
-                                            <p class="goods-name">荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机 </p>
-                                            <p class="goods-sku">颜色:炫影蓝; 版本:4+64G;</p>
-                                        </div>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                            <div class="goods-info">
-                                <el-row>
-                                    <el-col :span="6">
-                                        <el-image style="width: 72px; height: 72px" src="http://static.yoshop.xany6.com/2018071718294208f086786.jpg" fit="cover"></el-image>
-                                    </el-col>
-                                    <el-col :span="18">
-                                        <div class="goods-name-sku">
-                                            <p class="goods-name">荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机荣耀 V10全网通 标配版 4GB+64GB 魅丽红 移动联通电信4G全面屏手机 </p>
-                                            <p class="goods-sku">颜色:炫影蓝; 版本:4+64G;</p>
-                                        </div>
-                                    </el-col>
-                                </el-row>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num">
-                                <p>￥1899.00</p>
-                                <p>×1</p>
-                            </div>
-                            <div class="order-goods-num">
-                                <p>￥1899.00</p>
-                                <p>×1</p>
-                            </div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px'">
-                                <p style="padding-top: 60px">￥1899.00</p>
-                                <p>(含运费：￥0.00)</p>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px'">
-                                <p style="padding-top: 60px">下***己</p>
-                                <p>(用户id：10226)</p>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px;text-align: center;line-height:'+ height * num +'px'">
-                                <el-tag size="mini" type="success" effect="dark">微信支付</el-tag>
-                            </div>
-                        </el-col>
-                        <el-col :span="2">
-                            <div class="order-goods-num" :style="'height: '+ height * num +'px;text-align: center;line-height:'+ height * num +'px'">
-                                <el-tag size="mini" type="success" effect="dark">快递配送</el-tag>
-                            </div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="order-goods-num order-status" :style="'height:'+ height * num + 'px'">
-                                <p :style="'padding-top:'+ padding * num + 'px'">付款状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>发货状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>收货状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                                <p>订单状态：<el-tag size="mini" type="success" effect="dark">已付款</el-tag></p>
-                            </div>
-                        </el-col>
-                        <el-col :span="3">
-                            <div class="order-handle" :style="'height: '+ height * num +'px;text-align: center;line-height:'+ height * num +'px'">
+                            <div class="order-handle" :style="'height: '+ height * item.count +'px;text-align: center;line-height:'+ height * item.count +'px'">
                                 <el-button size="small">订单详情</el-button>
                             </div>
                         </el-col>
@@ -268,6 +132,8 @@
             </div>
             <div class="pagination">
                 <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
                         :current-page="currentPage4"
                         :page-sizes="[15, 20, 30, 40]"
                         :page-size="limit"
@@ -290,23 +156,38 @@
                 limit:15,
                 orderData: [],
                 count: 0,
-                currentPage4:4,
+                currentPage4:1,
                 input: '',
                 dialogVisible: false,
                 height: 90,
                 num: 2,
-                padding: 20
+                padding: 20,
+                padding_two: 30
             }
         },
         methods: {
+            handleSizeChange(val) {
+                this.limit = val;
+                orderListData(this, {
+                    page: this.currentPage4,
+                    limit: this.limit
+                });
+            },
             handleClose() {
 
+            },
+            handleCurrentChange(val) {
+                this.currentPage4 = val;
+                orderListData(this, {
+                    page: this.currentPage4,
+                    limit: this.limit
+                });
             }
         },
         mounted() {
             orderListData(this, {
-                page: 1,
-                limit: 15
+                page: this.currentPage4,
+                limit: this.limit
             });
         }
     }
@@ -404,10 +285,22 @@
     .order-goods-num > p:last-child{
         padding-top: 5px;
     }
-    .order-status > p{
+    .order-status {
+        position: relative;
+    }
+    .order-status > div{
+        width: 100%;
+        position: absolute;
+        top:50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+    .order-status > div > p{
         padding-top: 5px;
+        text-align: center;
     }
-    .order-status > p:first-child{
-        padding-top: 10px;
-    }
+    
 </style>

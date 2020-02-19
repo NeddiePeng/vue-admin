@@ -6,22 +6,27 @@
             <el-breadcrumb-item>优惠券领取记录</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="content-node" style="padding-top: 20px">
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column prop="name" label="用户" width="150"></el-table-column>
-                <el-table-column prop="id" label="优惠券ID" width="100"></el-table-column>
-                <el-table-column prop="address" label="优惠券名称" width="180">
+            <el-table :data="list" stripe style="width: 100%">
+                <el-table-column prop="nickname" label="用户" width="150"></el-table-column>
+                <el-table-column prop="voucher_id" label="优惠券ID" width="100"></el-table-column>
+                <el-table-column label="优惠券名称" width="180">
                     <template slot-scope="scope">
-                        <div class="goods-name">{{ scope.row.address }}</div>
+                        <div class="goods-name">{{ scope.row.voucher.name }}</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="num" label="最低消费金额" width="120"></el-table-column>
-                <el-table-column prop="name" label="优惠方式" width="120"></el-table-column>
+                <el-table-column prop="voucher.full_price" label="最低消费金额" width="120"></el-table-column>
+                <el-table-column label="优惠方式" width="120">
+                    <template slot-scope="scope">
+                        <div class="goods-name">满减券</div>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="address" label="有效期" width="120">
                     <template slot-scope="scope">
-                        <div class="goods-name">领取 7 天内有效</div>
+                        <div class="goods-name" v-if="scope.row.voucher.valid_num != 0">领取 {{scope.row.voucher.valid_num}} 天内有效</div>
+                        <div class="goods-name" v-else>永久有效</div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="date" label="领取时间"></el-table-column>
+                <el-table-column prop="start_time" label="领取时间"></el-table-column>
             </el-table>
             <div class="pagination">
                 <el-pagination
@@ -39,6 +44,8 @@
 </template>
 
 <script>
+    import {drawListData} from "../../request/blog/activity";
+
     export default {
         name: "CouponList",
         data() {
@@ -52,15 +59,7 @@
                 currentPage: 1,
                 limit: 15,
                 input: '',
-                tableData: [{
-                    id: 1,
-                    date: '2016-05-02 10:00:00',
-                    name: '立减 30.00 元',
-                    address: '上海市普陀区金沙',
-                    url: 'http://static.yoshop.xany6.com/2018071718294208f086786.jpg',
-                    num: 10,
-                    status: 1
-                }]
+                list: []
             }
         },
         methods: {
@@ -83,6 +82,12 @@
             add() {
                 this.dialogVisible = true;
             }
+        },
+        mounted() {
+            drawListData(this, {
+                page: this.currentPage,
+                limit: this.limit
+            });
         }
     }
 </script>
