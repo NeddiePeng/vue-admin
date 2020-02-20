@@ -91,6 +91,62 @@ function orderDetail(context, params = {}) {
 }
 
 
+/**
+ * 物流公司
+ * @type {string}
+ */
+const $company_api = '/mall/common/company';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function companyData(context, params = {}) {
+    context.$post($company_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+            return;
+        }
+        context.companyDataList = response.data;
+    });
+}
+
+
+/**
+ * 订单发货
+ * @type {string}
+ */
+const $send_goods_api = '/order/send';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function orderGoodsSend(context, params = {}) {
+    context.$post($send_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+            return;
+        }
+        context.dialogVisible = false;
+    });
+}
+
+
 export {
-    orderListData, orderDetail
+    orderListData, orderDetail, companyData, orderGoodsSend
 }

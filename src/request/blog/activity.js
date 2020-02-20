@@ -261,10 +261,39 @@ function addLimitGoods(context, params = {}) {
                 center: true
             });
         }
-        context.this.dialogTableVisible = false;
+        context.dialogTableVisible = false;
         context.multipleSelection = [];
     });
 }
+
+
+/**
+ * 删除团购商品
+ * @type {string}
+ */
+const $del_limit_goods_api = '/mall/activity/del-group-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ * @param index
+ */
+function delGroupGoods(context, params = {}, index) {
+    context.$post($del_limit_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list.splice(index, 1);
+    });
+}
+
 
 
 /**
@@ -316,6 +345,7 @@ function addGiftGoods(context, params = {}) {
                 center: true
             });
         }
+        context.dialogTableVisible = false;
         context.multipleSelection = [];
     });
 }
@@ -595,10 +625,96 @@ function drawListData(context, params = {}) {
     });
 }
 
+
+/**
+ * 整点秒杀活动商品
+ * @type {string}
+ */
+const $limit_goods_api = '/mall/activity/limit-goods';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function limitGoodsData(context, params = {}) {
+    context.$post($limit_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list = response.data;
+        context.total = response.count;
+    });
+}
+
+
+/**
+ * 小礼物商品
+ * @type {string}
+ */
+const $gift_goods_api = '/mall_activity/gift';
+
+/**
+ *
+ * @param context
+ * @param params
+ */
+function giftGoods(context, params = {}) {
+    context.$post($gift_goods_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list = response.data;
+        context.total = response.count;
+    });
+}
+
+
+/**
+ * 删除礼物
+ * @type {string}
+ */
+const $del_gift_api = '/mall_activity/del-gift';
+
+/**
+ *
+ * @param context
+ * @param params
+ * @param index
+ */
+function delGift(context, params = {}, index) {
+    context.$post($del_gift_api, params).then((response) => {
+        if(response.code !== 200) {
+            context.$message({
+                showClose: true,
+                message: response.message,
+                type: 'error',
+                offset: 100,
+                center: true
+            });
+        }
+        context.list.splice(index, 1);
+    });
+}
+
+
 export {
     list, mask, create, detail, update, updateStatus,
     limitGroupData, addGroup, updateGroupStatus, addLimitGoods,
     addActivityGoods, addGiftGoods, addCommentGoods, addNewGoods,
     activityGoods, delGoods, couponListData, addCouponData, couponDetail,
-    updateCoupon, updateVoucherStatus, drawListData
+    updateCoupon, updateVoucherStatus, drawListData, limitGoodsData,
+    delGroupGoods, giftGoods, delGift
 }

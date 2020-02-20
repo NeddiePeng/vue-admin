@@ -141,8 +141,18 @@ export default new Router({
                 },
                 {
                     path: '/order-detail',
-                    name: 'LimitGoods',
+                    name: 'OrderDetail',
                     component: () => import('@/components/mall/order/Detail')
+                },
+                {
+                    path: '/gift-goods',
+                    name: 'GiftGoods',
+                    component: () => import('@/components/mall/GiftGoods')
+                },
+                {
+                    path: '/user',
+                    name: 'Name',
+                    component: () => import('@/components/blog/User')
                 }
             ]
         },

@@ -1,5 +1,25 @@
 <template>
     <div class="container-node detail-node">
+        <el-dialog
+                title="订单发货"
+                :visible.sync="dialogVisible"
+                width="30%"
+                :before-close="handleClose">
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="物流公司">
+                    <el-select v-model="form.logistics_id" placeholder="请选择物流公司">
+                        <el-option v-for="(item, index) in companyDataList" :key="index"  :label="item.name" :value="item.id" ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="运单号">
+                    <el-input v-model="form.logistics_number" placeholder="请输入运单号"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="sendData">确 定</el-button>
+            </span>
+        </el-dialog>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">订单管理</el-breadcrumb-item>
             <el-breadcrumb-item>订单详情</el-breadcrumb-item>
@@ -19,7 +39,7 @@
                     </el-col>
                     <el-col :span="6">
                         <p>发货</p>
-                        <p v-if="orderData.order.status != 0 && orderData.order.status != 3 && orderData.order.status != 2">发货于 {{orderData.order.send_time}}</p>
+                        <p v-if="orderData.order.status != 0 && orderData.order.status != 3 && orderData.order.status == 2">发货于 {{orderData.order.send_time}}</p>
                         <p v-else>{{text}}</p>
                     </el-col>
                     <el-col :span="5">
@@ -142,13 +162,13 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="item">
+        <div class="item" v-if="orderData.address && Object.keys(orderData.address).length > 0">
             <p class="order-title">
                 <span class="title-line"></span>
                 <span>收货信息</span>
             </p>
             <el-divider></el-divider>
-            <el-table border v-if="orderData.address" :data="[orderData.address]" style="width: 100%">
+            <el-table border v-if="orderData.address && Object.keys(orderData.address).length > 0" :data="[orderData.address]" style="width: 100%">
                 <el-table-column prop="full_name" label="收货人" width="180"></el-table-column>
                 <el-table-column prop="mobile" label="收货电话" width="200"></el-table-column>
                 <el-table-column label="收货地址">
@@ -191,37 +211,25 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="item">
+        <div class="item" v-if="orderData.deliver">
             <p class="order-title">
                 <span class="title-line"></span>
                 <span>发货信息</span>
             </p>
             <el-divider></el-divider>
-            <el-table
-                    border
-                    :data="tableData"
-                    style="width: 100%">
-                <el-table-column
-                        prop="order_no"
-                        label="物流公司"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="物流单号"
-                        width="250">
+            <el-table v-if="orderData.deliver && Object.keys(orderData.deliver).length > 0" border :data="[orderData.deliver]" style="width: 100%">
+                <el-table-column prop="name" label="物流公司" width="180"></el-table-column>
+                <el-table-column prop="logistics_number" label="物流单号" width="250">
                 </el-table-column>
                 <el-table-column prop="address" label="发货状态">
                     <template slot-scope="scope">
-                        <el-tag effect="dark" size="mini">微信支付</el-tag>
+                        <el-tag effect="dark" size="mini" v-if="scope.row.status == 0">已发货</el-tag>
+                        <el-tag effect="dark" size="mini" v-else>已收货货</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="address" label="发货时间">
-                    <template slot-scope="scope">
-                        <el-tag effect="dark" type="success" size="mini">快递配送</el-tag>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="create_time" label="发货时间"></el-table-column>
             </el-table>
+            <el-button type="warning" @click="sendGoods" v-else>立即发货</el-button>
         </div>
         <div class="item">
             <p class="order-title">
@@ -262,7 +270,7 @@
 </template>
 
 <script>
-    import {orderDetail} from "../../../request/mall/order";
+    import {orderDetail, companyData, orderGoodsSend} from "../../../request/mall/order";
 
     export default {
         name: "Detail",
@@ -275,12 +283,35 @@
                     }],
                 orderData: [],
                 peogress: 0,
-                text: ''
+                text: '',
+                dialogVisible: false,
+                form: {
+                    logistics_id: '',
+                    logistics_number: ''
+                },
+                companyDataList: []
+            }
+        },
+        methods: {
+            sendGoods() {
+                this.dialogVisible = true;
+                companyData(this);
+            },
+            sendData() {
+                orderGoodsSend(this, {
+                    logistics_id: this.form.logistics_id,
+                    logistics_number: this.form.logistics_number,
+                    order_no: this.order_no
+                });
+            },
+            handleClose() {
+                this.dialogVisible = false;
             }
         },
         mounted() {
+            this.order_no = this.$route.query.order_no ? this.$route.query.order_no : '0';
             orderDetail(this, {
-                order_no: '202002161633011688857624'
+                order_no: this.order_no
             });
         }
     }

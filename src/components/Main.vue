@@ -66,7 +66,7 @@
                             <i class="el-icon-s-custom"></i>
                             <span slot="title">用户管理</span>
                         </template>
-                        <el-menu-item index="1-1">用户列表</el-menu-item>
+                        <el-menu-item index="/user">用户列表</el-menu-item>
                         <el-menu-item index="1-1">达人列表</el-menu-item>
                     </el-submenu>
                     <el-menu-item index="/table" v-show="activeNav == 'blog' ? true : false">
@@ -115,12 +115,6 @@
                             <span slot="title">订单管理</span>
                         </template>
                         <el-menu-item index="/order">全部订单</el-menu-item>
-                        <el-menu-item index="/order">待发货</el-menu-item>
-                        <el-menu-item index="/order">待收货</el-menu-item>
-                        <el-menu-item index="/order">待付款</el-menu-item>
-                        <el-menu-item index="/order">已完成</el-menu-item>
-                        <el-menu-item index="/order">已取消</el-menu-item>
-                        <el-menu-item index="/order">已退款</el-menu-item>
                     </el-submenu>
                     <el-submenu index="/application" v-show="activeNav != 'blog' ? true : false">
                         <template slot="title">
@@ -134,8 +128,7 @@
                         </el-submenu>
                         <el-submenu index="1-5-1">
                             <span slot="title">免费小礼物</span>
-                            <el-menu-item index="/mall-coupon">礼物列表</el-menu-item>
-                            <el-menu-item index="/limit-buy">活动周期</el-menu-item>
+                            <el-menu-item index="/gift-goods">礼物列表</el-menu-item>
                         </el-submenu>
                     </el-submenu>
                 </el-menu>

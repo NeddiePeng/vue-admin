@@ -10,16 +10,6 @@
                     <el-input v-model="form.goods_id"></el-input>
                     <p class="input-tip">可在 <el-link type="primary" :underline="false">商品管理 - 商品列表</el-link> 中查看</p>
                 </el-form-item>
-                <el-form-item label="选择活动">
-                    <el-select v-model="form.limit_id" placeholder="请选择">
-                        <el-option
-                                v-for="(item, index) in activityDataList.limit_time"
-                                :key="index"
-                                :label="item.cycle_start +'~'+ item.cycle_end"
-                                :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
     <el-button @click="dialogTableVisible = false">取 消</el-button>
@@ -47,7 +37,7 @@
         </div>
         <div class="content-node" style="padding-top: 20px">
             <el-table :data="list" stripe style="width: 100%">
-                <el-table-column prop="goods_id" label="秒杀商品ID" width="100"></el-table-column>
+                <el-table-column prop="goods_id" label="礼物商品ID" width="100"></el-table-column>
                 <el-table-column prop="address" label="商品信息" width="350">
                     <template slot-scope="scope">
                         <div class="goods-info activity-goods-data">
@@ -64,15 +54,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="surplus_stock" label="累计销量" width="90"></el-table-column>
-                <el-table-column prop="goods.total_stock" label="库存总量" width="90"></el-table-column>
+                <el-table-column prop="receive" label="累计领取" width="90"></el-table-column>
+                <el-table-column prop="stock" label="礼物总数量" width="90"></el-table-column>
                 <el-table-column prop="id" label="排序" width="90"></el-table-column>
-                <el-table-column prop="num" label="状态" width="100">
-                    <template slot-scope="scope">
-                        <el-tag type="success" v-if="scope.row.status == 0">正常上架</el-tag>
-                        <el-tag type="warning" v-else>已下架</el-tag>
-                    </template>
-                </el-table-column>
+                <el-table-column prop="cycle_time" label="所属周期" width="100"></el-table-column>
                 <el-table-column prop="create_time" label="创建时间" width="150"></el-table-column>
                 <el-table-column prop="address" label="操作" width="120" fixed="right">
                     <template slot-scope="scope">
@@ -96,17 +81,14 @@
 </template>
 
 <script>
-    import {limitGoodsData, addLimitGoods, delGroupGoods} from "../../../request/blog/activity";
-
-    import {activityData} from "../../../request/mall/add";
+    import {addGiftGoods, giftGoods, delGift} from "../../request/blog/activity";
 
     export default {
-        name: "LimitGoods",
+        name: "GiftGoods",
         data() {
             return {
                 form: {
-                    goods_id: '',
-                    limit_id: ''
+                    goods_id: ''
                 },
                 textarea: '',
                 dialogTableVisible: false,
@@ -114,24 +96,15 @@
                 currentPage: 1,
                 limit: 15,
                 input: '',
-                list: [],
-                activityDataList: []
+                list: []
             }
         },
         methods: {
             handleCurrentChange(val) {
                 this.currentPage = val;
-                limitGoodsData(this, {
-                    page: this.currentPage,
-                    limit: this.limit
-                });
             },
             handleSizeChange(val) {
                 this.limit = val;
-                limitGoodsData(this, {
-                    page: this.currentPage,
-                    limit: this.limit
-                });
             },
             handleClose() {
                 this.dialogTableVisible = false;
@@ -144,23 +117,21 @@
                 }
             },
             add() {
-                activityData(this);
                 this.dialogTableVisible = true;
             },
             onSubmitAdd() {
-                addLimitGoods(this, {
-                    goods_ids: [this.form.goods_id],
-                    limit_id: this.form.limit_id
+                addGiftGoods(this, {
+                    goods_ids: [this.form.goods_id]
                 });
             },
             del(id, index) {
-                delGroupGoods(this, {
+                delGift(this, {
                     id: id
                 }, index);
             }
         },
         mounted() {
-            limitGoodsData(this, {
+            giftGoods(this, {
                 page: this.currentPage,
                 limit: this.limit
             });

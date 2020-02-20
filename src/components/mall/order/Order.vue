@@ -124,7 +124,7 @@
                         </el-col>
                         <el-col :span="3">
                             <div class="order-handle" :style="'height: '+ height * item.count +'px;text-align: center;line-height:'+ height * item.count +'px'">
-                                <el-button size="small">订单详情</el-button>
+                                <el-button size="small" @click="jumpDetail(item.order_no)">订单详情</el-button>
                             </div>
                         </el-col>
                     </el-row>
@@ -175,6 +175,14 @@
             },
             handleClose() {
 
+            },
+            jumpDetail(order_no) {
+                this.$router.push({
+                    path: '/order-detail',
+                    query: {
+                        order_no: order_no
+                    }
+                });
             },
             handleCurrentChange(val) {
                 this.currentPage4 = val;
